@@ -24,7 +24,7 @@ When generating code for this repository:
 - **zigbee-herdsman-converters**: 25.42.0 (exact version - device definitions)
 - **MQTT**: mqtt 5.14.1
 - **Logging**: winston 3.18.3
-- **YAML**: js-yaml 4.1.0
+- **YAML**: yaml 2.9.0
 - **Decorators**: bind-decorator 1.0.11
 - **WebSocket**: ws 8.18.1
 
@@ -190,7 +190,7 @@ logger.debug("message");
 ### Security
 - Validate input using Ajv JSON schema validation (see `settings.ts` pattern)
 - Sanitize file paths using `path.join` from Node.js
-- Use YAML safe loading: `yaml.safeLoad()`
+- Read YAML through `lib/util/yaml.ts`, which rejects documents with parse errors or warnings
 - Handle sensitive data (credentials, tokens) through settings with proper defaults
 - Never log sensitive information (passwords, tokens)
 

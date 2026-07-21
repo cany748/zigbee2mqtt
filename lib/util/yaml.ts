@@ -2,34 +2,39 @@ import assert from "node:assert";
 import fs from "node:fs";
 
 import equals from "fast-deep-equal/es6";
-import {dump, load, YAMLException} from "js-yaml";
+import {parseDocument, stringify, type YAMLError} from "yaml";
 
-export class YAMLFileException extends YAMLException {
+// `singleQuote` keeps the quoting style `js-yaml` used, so upgrading does not rewrite quotes
+// throughout existing user configs the first time one is saved.
+const STRINGIFY_OPTIONS = {singleQuote: true} as const;
+
+export class YAMLFileException extends Error {
     file: string;
 
-    constructor(error: YAMLException, file: string) {
-        super(error.reason, error.mark);
+    constructor(error: YAMLError, file: string) {
+        super(error.message);
 
         this.name = "YAMLFileException";
         this.cause = error.cause;
-        this.message = error.message;
         this.stack = error.stack;
         this.file = file;
     }
 }
 
 function read(file: string): KeyValue {
-    try {
-        const result = load(fs.readFileSync(file, "utf8"));
-        assert(result instanceof Object, `The content of ${file} is expected to be an object`);
-        return result as KeyValue;
-    } catch (error) {
-        if (error instanceof YAMLException) {
-            throw new YAMLFileException(error, file);
-        }
+    // `parseDocument` collects problems instead of throwing on the first one, and unlike `parse` it also
+    // surfaces warnings (e.g. an unresolved `!secret` tag when the value was not quoted). Those must be
+    // treated as errors, otherwise the offending value is silently dropped from the resulting config.
+    const doc = parseDocument(fs.readFileSync(file, "utf8"), {logLevel: "silent"});
+    const error = doc.errors[0] ?? doc.warnings[0];
 
-        throw error;
+    if (error) {
+        throw new YAMLFileException(error, file);
     }
+
+    const result = doc.toJS();
+    assert(result instanceof Object, `The content of ${file} is expected to be an object`);
+    return result as KeyValue;
 }
 
 function readIfExists(file: string, fallback: KeyValue = {}): KeyValue {
@@ -40,7 +45,7 @@ function writeIfChanged(file: string, content: KeyValue): void {
     const before = readIfExists(file);
 
     if (!equals(before, content)) {
-        fs.writeFileSync(file, dump(content));
+        fs.writeFileSync(file, stringify(content, STRINGIFY_OPTIONS));
     }
 }
 
