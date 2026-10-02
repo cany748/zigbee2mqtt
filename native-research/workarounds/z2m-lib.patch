@@ -1,0 +1,866 @@
+diff -ru /home/user/zigbee2mqtt/lib/controller.ts lib/controller.ts
+--- /home/user/zigbee2mqtt/lib/controller.ts	2026-10-02 14:07:51.916229097 +0000
++++ lib/controller.ts	2026-10-02 16:35:46.592161847 +0000
+@@ -1,4 +1,4 @@
+-import bind from "bind-decorator";
++/// <reference path="types/types.d.ts" />
+ import {setLogger as zhSetLogger} from "zigbee-herdsman";
+ import {setLogger as zhcSetLogger} from "zigbee-herdsman-converters";
+ import EventBus from "./eventBus";
+@@ -215,7 +215,7 @@
+         this.#startAbortController = undefined; // gc
+     }
+ 
+-    @bind async enableDisableExtension(enable: boolean, name: string): Promise<void> {
++    async enableDisableExtension(enable: boolean, name: string): Promise<void> {
+         if (enable) {
+             let extension: Extension;
+ 
+@@ -307,7 +307,7 @@
+         }
+     }
+ 
+-    @bind async addExtension(extension: Extension): Promise<void> {
++    async addExtension(extension: Extension): Promise<void> {
+         for (const ext of this.extensions) {
+             if (ext.constructor.name === extension.constructor.name) {
+                 throw new Error(`Extension with name ${ext.constructor.name} already present`);
+@@ -334,7 +334,7 @@
+ 
+     private async stopExtension(extension: Extension): Promise<void> {
+         try {
+-            await extension.stop();
++            await (extension as any).stop();
+         } catch (error) {
+             logger.error(`Failed to stop '${extension.constructor.name}' (${(error as Error).stack})`);
+         }
+@@ -349,7 +349,7 @@
+         let localCode = 0;
+         for (const extension of this.extensions) {
+             try {
+-                await extension.stop();
++                await (extension as any).stop();
+             } catch (error) {
+                 logger.error(`Failed to stop '${extension.constructor.name}' (${(error as Error).stack})`);
+                 localCode = 1;
+@@ -379,7 +379,7 @@
+         return await this.exitCallback(code, restart);
+     }
+ 
+-    @bind async publishEntityState(entity: Group | Device, payload: KeyValue, stateChangeReason?: StateChangeReason): Promise<void> {
++    async publishEntityState(entity: Group | Device, payload: KeyValue, stateChangeReason?: StateChangeReason): Promise<void> {
+         let message: Zigbee2MQTTAPI["{friendlyName}"] = {...payload};
+ 
+         // Update state cache with new state.
+diff -ru /home/user/zigbee2mqtt/lib/eventBus.ts lib/eventBus.ts
+--- /home/user/zigbee2mqtt/lib/eventBus.ts	2026-10-02 14:07:51.916229097 +0000
++++ lib/eventBus.ts	2026-10-02 14:25:11.717802295 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="types/types.d.ts" />
+ import events from "node:events";
+ 
+ import logger from "./util/logger";
+diff -ru /home/user/zigbee2mqtt/lib/extension/availability.ts lib/extension/availability.ts
+--- /home/user/zigbee2mqtt/lib/extension/availability.ts	2026-10-02 14:07:51.916229097 +0000
++++ lib/extension/availability.ts	2026-10-02 16:36:49.607310135 +0000
+@@ -1,5 +1,5 @@
++/// <reference path="../types/types.d.ts" />
+ import assert from "node:assert";
+-import bind from "bind-decorator";
+ import debounce from "debounce";
+ import type * as zhc from "zigbee-herdsman-converters";
+ import type {Zigbee2MQTTAPI} from "../types/api";
+@@ -273,7 +273,7 @@
+         }
+     }
+ 
+-    @bind private async onLastSeenChanged(data: eventdata.LastSeenChanged): Promise<void> {
++    private async onLastSeenChanged(data: eventdata.LastSeenChanged): Promise<void> {
+         if (utils.isAvailabilityEnabledForEntity(data.device, settings.get())) {
+             // Remove from ping queue, not necessary anymore since we know the device is online.
+             this.removeFromPingQueue(data.device);
+@@ -282,7 +282,7 @@
+         }
+     }
+ 
+-    override async stop(): Promise<void> {
++    override async stop(..._args: unknown[]): Promise<void> {
+         this.stopped = true;
+         this.pingQueue = [];
+ 
+diff -ru /home/user/zigbee2mqtt/lib/extension/bind.ts lib/extension/bind.ts
+--- /home/user/zigbee2mqtt/lib/extension/bind.ts	2026-10-02 14:07:51.918845139 +0000
++++ lib/extension/bind.ts	2026-10-02 14:25:11.800523100 +0000
+@@ -1,5 +1,5 @@
++/// <reference path="../types/types.d.ts" />
+ import assert from "node:assert";
+-import bind from "bind-decorator";
+ import debounce from "debounce";
+ import {Zcl} from "zigbee-herdsman";
+ import type {TClusterAttributeKeys} from "zigbee-herdsman/dist/zspec/zcl/definition/clusters-types";
+@@ -275,7 +275,7 @@
+         return [undefined, undefined, undefined];
+     }
+ 
+-    @bind private async onMQTTMessage(data: eventdata.MQTTMessage): Promise<void> {
++    private async onMQTTMessage(data: eventdata.MQTTMessage): Promise<void> {
+         if (data.topic.endsWith("binds/clear")) {
+             const message = JSON.parse(data.message) as Zigbee2MQTTAPI["bridge/request/device/binds/clear"];
+ 
+@@ -432,7 +432,7 @@
+         }
+     }
+ 
+-    @bind async onGroupMembersChanged(data: eventdata.GroupMembersChanged): Promise<void> {
++    async onGroupMembersChanged(data: eventdata.GroupMembersChanged): Promise<void> {
+         if (data.action === "add") {
+             const bindsToGroup: zh.Bind[] = [];
+ 
+@@ -566,7 +566,7 @@
+         }
+     }
+ 
+-    @bind async poll(data: eventdata.DeviceMessage): Promise<void> {
++    async poll(data: eventdata.DeviceMessage): Promise<void> {
+         /**
+          * This method poll bound endpoints and group members for state changes.
+          *
+diff -ru /home/user/zigbee2mqtt/lib/extension/bridge.ts lib/extension/bridge.ts
+--- /home/user/zigbee2mqtt/lib/extension/bridge.ts	2026-10-02 14:07:51.918845139 +0000
++++ lib/extension/bridge.ts	2026-10-02 14:25:11.754137923 +0000
+@@ -1,6 +1,6 @@
++/// <reference path="../types/types.d.ts" />
+ import fs from "node:fs";
+ import path from "node:path";
+-import bind from "bind-decorator";
+ import {zip} from "fflate";
+ import type winston from "winston";
+ import Transport from "winston-transport";
+@@ -201,7 +201,7 @@
+         logger.removeTransport(this.logTransport);
+     }
+ 
+-    @bind async onMQTTMessage(data: eventdata.MQTTMessage): Promise<void> {
++    async onMQTTMessage(data: eventdata.MQTTMessage): Promise<void> {
+         const match = data.topic.match(this.#requestRegex);
+ 
+         if (!match) {
+@@ -230,15 +230,15 @@
+      * Requests
+      */
+ 
+-    @bind async deviceOptions(message: KeyValue | string): Promise<Zigbee2MQTTResponse<"bridge/response/device/options">> {
++    async deviceOptions(message: KeyValue | string): Promise<Zigbee2MQTTResponse<"bridge/response/device/options">> {
+         return await this.changeEntityOptions("device", message);
+     }
+ 
+-    @bind async groupOptions(message: KeyValue | string): Promise<Zigbee2MQTTResponse<"bridge/response/group/options">> {
++    async groupOptions(message: KeyValue | string): Promise<Zigbee2MQTTResponse<"bridge/response/group/options">> {
+         return await this.changeEntityOptions("group", message);
+     }
+ 
+-    @bind async bridgeOptions(message: KeyValue | string): Promise<Zigbee2MQTTResponse<"bridge/response/options">> {
++    async bridgeOptions(message: KeyValue | string): Promise<Zigbee2MQTTResponse<"bridge/response/options">> {
+         if (typeof message !== "object" || typeof message.options !== "object") {
+             throw new Error("Invalid payload");
+         }
+@@ -275,20 +275,20 @@
+         return utils.getResponse(message, {restart_required: this.restartRequired});
+     }
+ 
+-    @bind async deviceRemove(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/device/remove">> {
++    async deviceRemove(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/device/remove">> {
+         return await this.removeEntity("device", message);
+     }
+ 
+-    @bind async groupRemove(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/group/remove">> {
++    async groupRemove(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/group/remove">> {
+         return await this.removeEntity("group", message);
+     }
+ 
+     // biome-ignore lint/suspicious/useAwait: API
+-    @bind async healthCheck(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/health_check">> {
++    async healthCheck(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/health_check">> {
+         return utils.getResponse(message, {healthy: true});
+     }
+ 
+-    @bind async coordinatorCheck(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/coordinator_check">> {
++    async coordinatorCheck(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/coordinator_check">> {
+         const result = await this.zigbee.coordinatorCheck();
+         const missingRouters = result.missingRouters.map((d) => {
+             return {ieee_address: d.ieeeAddr, friendly_name: d.name};
+@@ -296,7 +296,7 @@
+         return utils.getResponse(message, {missing_routers: missingRouters});
+     }
+ 
+-    @bind async groupAdd(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/group/add">> {
++    async groupAdd(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/group/add">> {
+         if (typeof message === "object" && message.friendly_name === undefined) {
+             throw new Error("Invalid payload");
+         }
+@@ -309,23 +309,23 @@
+         return utils.getResponse(message, {friendly_name: group.friendly_name, id: group.ID});
+     }
+ 
+-    @bind async deviceRename(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/device/rename">> {
++    async deviceRename(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/device/rename">> {
+         return await this.renameEntity("device", message);
+     }
+ 
+-    @bind async groupRename(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/group/rename">> {
++    async groupRename(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/group/rename">> {
+         return await this.renameEntity("group", message);
+     }
+ 
+     // biome-ignore lint/suspicious/useAwait: API
+-    @bind async restart(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/restart">> {
++    async restart(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/restart">> {
+         // Wait 500 ms before restarting so response can be send.
+         setTimeout(this.restartCallback, 500);
+         logger.info("Restarting Zigbee2MQTT");
+         return utils.getResponse(message, {});
+     }
+ 
+-    @bind async backup(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/backup">> {
++    async backup(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/backup">> {
+         await this.zigbee.backup();
+         const dataPath = data.getPath();
+         const files = utils.getAllFiles(dataPath);
+@@ -351,7 +351,7 @@
+         return utils.getResponse(message, {zip: Buffer.from(zipContent).toString("base64")});
+     }
+ 
+-    @bind async installCodeAdd(message: KeyValue | string): Promise<Zigbee2MQTTResponse<"bridge/response/install_code/add">> {
++    async installCodeAdd(message: KeyValue | string): Promise<Zigbee2MQTTResponse<"bridge/response/install_code/add">> {
+         if (typeof message === "object" && message.value === undefined) {
+             throw new Error("Invalid payload");
+         }
+@@ -362,7 +362,7 @@
+         return utils.getResponse(message, {value});
+     }
+ 
+-    @bind async permitJoin(message: KeyValue | string): Promise<Zigbee2MQTTResponse<"bridge/response/permit_join">> {
++    async permitJoin(message: KeyValue | string): Promise<Zigbee2MQTTResponse<"bridge/response/permit_join">> {
+         let time: number | undefined;
+         let device: Device | undefined;
+ 
+@@ -397,7 +397,7 @@
+         return utils.getResponse(message, response);
+     }
+ 
+-    @bind async touchlinkIdentify(message: KeyValue | string): Promise<Zigbee2MQTTResponse<"bridge/response/touchlink/identify">> {
++    async touchlinkIdentify(message: KeyValue | string): Promise<Zigbee2MQTTResponse<"bridge/response/touchlink/identify">> {
+         if (typeof message !== "object" || message.ieee_address === undefined || message.channel === undefined) {
+             throw new Error("Invalid payload");
+         }
+@@ -407,7 +407,7 @@
+         return utils.getResponse(message, {ieee_address: message.ieee_address, channel: message.channel});
+     }
+ 
+-    @bind async touchlinkFactoryReset(message: KeyValue | string): Promise<Zigbee2MQTTResponse<"bridge/response/touchlink/factory_reset">> {
++    async touchlinkFactoryReset(message: KeyValue | string): Promise<Zigbee2MQTTResponse<"bridge/response/touchlink/factory_reset">> {
+         let result = false;
+         let payload: Zigbee2MQTTAPI["bridge/response/touchlink/factory_reset"] = {};
+ 
+@@ -433,7 +433,7 @@
+         throw new Error("Failed to factory reset device through Touchlink");
+     }
+ 
+-    @bind async touchlinkScan(message: KeyValue | string): Promise<Zigbee2MQTTResponse<"bridge/response/touchlink/scan">> {
++    async touchlinkScan(message: KeyValue | string): Promise<Zigbee2MQTTResponse<"bridge/response/touchlink/scan">> {
+         logger.info("Start Touchlink scan");
+         const result = await this.zigbee.touchlinkScan();
+         const found = result.map((r) => {
+@@ -492,7 +492,7 @@
+         return utils.getResponse(message, {from: oldOptions, to: newOptions, id: ID, restart_required: this.restartRequired});
+     }
+ 
+-    @bind async deviceReportingConfigure(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/device/reporting/configure">> {
++    async deviceReportingConfigure(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/device/reporting/configure">> {
+         if (
+             typeof message !== "object" ||
+             message.id === undefined ||
+@@ -544,7 +544,7 @@
+         });
+     }
+ 
+-    @bind async deviceReportingRead(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/device/reporting/read">> {
++    async deviceReportingRead(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/device/reporting/read">> {
+         if (
+             typeof message !== "object" ||
+             message.id === undefined ||
+@@ -584,7 +584,7 @@
+         return utils.getResponse(message, responseData);
+     }
+ 
+-    @bind async deviceInterview(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/device/interview">> {
++    async deviceInterview(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/device/interview">> {
+         if (typeof message !== "object" || message.id === undefined) {
+             throw new Error("Invalid payload");
+         }
+@@ -596,7 +596,7 @@
+         return utils.getResponse(message, {id: message.id});
+     }
+ 
+-    @bind async deviceGenerateExternalDefinition(
++    async deviceGenerateExternalDefinition(
+         message: string | KeyValue,
+     ): Promise<Zigbee2MQTTResponse<"bridge/response/device/generate_external_definition">> {
+         if (typeof message !== "object" || message.id === undefined) {
+@@ -609,7 +609,7 @@
+         return utils.getResponse(message, {id: message.id, source});
+     }
+ 
+-    @bind async action(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/action">> {
++    async action(message: string | KeyValue): Promise<Zigbee2MQTTResponse<"bridge/response/action">> {
+         if (typeof message !== "object" || !message.action) {
+             throw new Error("Invalid payload");
+         }
+diff -ru /home/user/zigbee2mqtt/lib/extension/configure.ts lib/extension/configure.ts
+--- /home/user/zigbee2mqtt/lib/extension/configure.ts	2026-10-02 14:07:51.918845139 +0000
++++ lib/extension/configure.ts	2026-10-02 14:25:11.771958662 +0000
+@@ -1,4 +1,4 @@
+-import bind from "bind-decorator";
++/// <reference path="../types/types.d.ts" />
+ import Device from "../model/device";
+ import type {Zigbee2MQTTAPI} from "../types/api";
+ import logger from "../util/logger";
+@@ -15,7 +15,7 @@
+     private attempts = new Map<string, number>();
+     private topic = `${settings.get().mqtt.base_topic}/bridge/request/device/configure`;
+ 
+-    @bind private async onReconfigure(data: eventdata.Reconfigure): Promise<void> {
++    private async onReconfigure(data: eventdata.Reconfigure): Promise<void> {
+         // Disabling reporting unbinds some cluster which could be bound by configure, re-setup.
+         if (data.device.zh.meta?.configured !== undefined) {
+             delete data.device.zh.meta.configured;
+@@ -25,7 +25,7 @@
+         await this.configure(data.device, "reporting_disabled");
+     }
+ 
+-    @bind private async onMQTTMessage(data: eventdata.MQTTMessage): Promise<void> {
++    private async onMQTTMessage(data: eventdata.MQTTMessage): Promise<void> {
+         if (data.topic === this.topic) {
+             const message = utils.parseJSON(data.message, data.message) as Zigbee2MQTTAPI["bridge/request/device/configure"];
+             const ID = typeof message === "object" ? message.id : message;
+diff -ru /home/user/zigbee2mqtt/lib/extension/extension.ts lib/extension/extension.ts
+--- /home/user/zigbee2mqtt/lib/extension/extension.ts	2026-10-02 14:07:51.918845139 +0000
++++ lib/extension/extension.ts	2026-10-02 14:25:11.827427246 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="../types/types.d.ts" />
+ abstract class Extension {
+     protected zigbee: Zigbee;
+     protected mqtt: Mqtt;
+diff -ru /home/user/zigbee2mqtt/lib/extension/externalConverters.ts lib/extension/externalConverters.ts
+--- /home/user/zigbee2mqtt/lib/extension/externalConverters.ts	2026-10-02 14:07:51.918845139 +0000
++++ lib/extension/externalConverters.ts	2026-10-02 14:25:11.964500809 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="../types/types.d.ts" />
+ import type {ExternalDefinitionWithExtend} from "zigbee-herdsman-converters";
+ 
+ import {addExternalDefinition, removeExternalDefinitions} from "zigbee-herdsman-converters";
+diff -ru /home/user/zigbee2mqtt/lib/extension/externalExtensions.ts lib/extension/externalExtensions.ts
+--- /home/user/zigbee2mqtt/lib/extension/externalExtensions.ts	2026-10-02 14:07:51.918845139 +0000
++++ lib/extension/externalExtensions.ts	2026-10-02 14:25:11.844222455 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="../types/types.d.ts" />
+ import logger from "../util/logger";
+ import * as settings from "../util/settings";
+ import type Extension from "./extension";
+diff -ru /home/user/zigbee2mqtt/lib/extension/externalJS.ts lib/extension/externalJS.ts
+--- /home/user/zigbee2mqtt/lib/extension/externalJS.ts	2026-10-02 14:07:51.918845139 +0000
++++ lib/extension/externalJS.ts	2026-10-02 14:25:11.856530275 +0000
+@@ -1,7 +1,7 @@
++/// <reference path="../types/types.d.ts" />
+ import fs from "node:fs";
+ import os from "node:os";
+ import path from "node:path";
+-import bind from "bind-decorator";
+ import type {Zigbee2MQTTAPI, Zigbee2MQTTResponse} from "../types/api";
+ import data from "../util/data";
+ import logger from "../util/logger";
+@@ -109,7 +109,7 @@
+         }
+     }
+ 
+-    @bind async onMQTTMessage(data: eventdata.MQTTMessage): Promise<void> {
++    async onMQTTMessage(data: eventdata.MQTTMessage): Promise<void> {
+         const match = data.topic.match(this.requestRegex);
+ 
+         if (match && SUPPORTED_OPERATIONS.includes(match[1].toLowerCase())) {
+@@ -143,7 +143,7 @@
+ 
+     protected abstract loadJS(name: string, mod: M, newName?: string): Promise<void>;
+ 
+-    @bind private async remove(
++    private async remove(
+         message: Zigbee2MQTTAPI["bridge/request/converter/remove"] | Zigbee2MQTTAPI["bridge/request/extension/remove"],
+     ): Promise<Zigbee2MQTTResponse<"bridge/response/converter/remove" | "bridge/response/extension/remove">> {
+         if (!message.name) {
+@@ -167,7 +167,7 @@
+         return utils.getResponse(message, {}, `${name} (${toBeRemoved}) doesn't exists`);
+     }
+ 
+-    @bind private async save(
++    private async save(
+         message: Zigbee2MQTTAPI["bridge/request/converter/save"] | Zigbee2MQTTAPI["bridge/request/extension/save"],
+     ): Promise<Zigbee2MQTTResponse<"bridge/response/converter/save" | "bridge/response/extension/save">> {
+         if (!message.name || !message.code) {
+diff -ru /home/user/zigbee2mqtt/lib/extension/frontend.ts lib/extension/frontend.ts
+--- /home/user/zigbee2mqtt/lib/extension/frontend.ts	2026-10-02 14:07:51.918845139 +0000
++++ lib/extension/frontend.ts	2026-10-02 14:25:11.912111753 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="../types/types.d.ts" />
+ import assert from "node:assert";
+ import {existsSync, readFileSync} from "node:fs";
+ import type {IncomingMessage, Server, ServerResponse} from "node:http";
+@@ -5,8 +6,7 @@
+ import {createServer as createSecureServer} from "node:https";
+ import type {Socket} from "node:net";
+ import {posix} from "node:path";
+-import bind from "bind-decorator";
+-import WebSocket from "ws";
++import WebSocket, {WebSocketServer} from "ws";
+ import data from "../util/data";
+ import logger from "../util/logger";
+ import * as settings from "../util/settings";
+@@ -21,7 +21,7 @@
+ export class Frontend extends Extension {
+     private mqttBaseTopic: string;
+     private server: Server | undefined;
+-    private wss!: WebSocket.Server;
++    private wss!: WebSocketServer;
+     private baseUrl: string;
+ 
+     constructor(
+@@ -45,7 +45,7 @@
+     override async start(): Promise<void> {
+         if (settings.get().frontend.disable_ui_serving) {
+             const {host, port} = settings.get().frontend;
+-            this.wss = new WebSocket.Server({port, host, path: posix.join(this.baseUrl, "api")});
++            this.wss = new WebSocketServer({port, host, path: posix.join(this.baseUrl, "api")});
+ 
+             logger.info(
+                 /* v8 ignore next */
+@@ -120,7 +120,7 @@
+                 logger.info(`Started frontend on port ${host}:${port}`);
+             }
+ 
+-            this.wss = new WebSocket.Server({noServer: true, path: posix.join(this.baseUrl, "api")});
++            this.wss = new WebSocketServer({noServer: true, path: posix.join(this.baseUrl, "api")});
+         }
+ 
+         this.wss.on("connection", this.onWebSocketConnection);
+@@ -144,8 +144,8 @@
+         await new Promise((resolve) => (this.server ? this.server.close(resolve) : resolve(undefined)));
+     }
+ 
+-    @bind private onUpgrade(request: IncomingMessage, socket: Socket, head: Buffer): void {
+-        this.wss.handleUpgrade(request, socket, head, (ws) => {
++    private onUpgrade(request: IncomingMessage, socket: Socket, head: Buffer): void {
++        this.wss.handleUpgrade(request, socket, head, (ws: WebSocket) => {
+             // biome-ignore lint/style/noNonNullAssertion: `Only valid for request obtained from Server`
+             const {searchParams} = new URL(request.url!, "http://localhost"); // dummy base, may not be absolute
+             const authToken = settings.get().frontend.auth_token;
+@@ -158,7 +158,7 @@
+         });
+     }
+ 
+-    @bind private onWebSocketConnection(ws: WebSocket): void {
++    private onWebSocketConnection(ws: WebSocket): void {
+         ws.on("error", (msg) => logger.error(`WebSocket error: ${msg.message}`));
+         ws.on("message", (data: Buffer, isBinary: boolean) => {
+             if (!isBinary && data) {
+@@ -196,7 +196,7 @@
+         }
+     }
+ 
+-    @bind private onMQTTPublishMessageOrEntityState(data: eventdata.MQTTMessagePublished | eventdata.PublishEntityState): void {
++    private onMQTTPublishMessageOrEntityState(data: eventdata.MQTTMessagePublished | eventdata.PublishEntityState): void {
+         let topic: string;
+         let payload: KeyValue | string;
+ 
+diff -ru /home/user/zigbee2mqtt/lib/extension/groups.ts lib/extension/groups.ts
+--- /home/user/zigbee2mqtt/lib/extension/groups.ts	2026-10-02 14:07:51.918845139 +0000
++++ lib/extension/groups.ts	2026-10-02 14:25:11.779254689 +0000
+@@ -1,5 +1,5 @@
++/// <reference path="../types/types.d.ts" />
+ import assert from "node:assert";
+-import bind from "bind-decorator";
+ import equals from "fast-deep-equal/es6";
+ import type * as zhc from "zigbee-herdsman-converters";
+ import Device from "../model/device";
+@@ -45,7 +45,7 @@
+         this.eventBus.onMQTTMessage(this, this.onMQTTMessage);
+     }
+ 
+-    @bind async onStateChange(data: eventdata.StateChange): Promise<void> {
++    async onStateChange(data: eventdata.StateChange): Promise<void> {
+         const reason = "groupOptimistic";
+ 
+         if (data.reason === reason || data.reason === "publishCached") {
+@@ -251,7 +251,7 @@
+         return [undefined, undefined, undefined];
+     }
+ 
+-    @bind private async onMQTTMessage(data: eventdata.MQTTMessage): Promise<void> {
++    private async onMQTTMessage(data: eventdata.MQTTMessage): Promise<void> {
+         const [raw, parsed, error] = this.parseMQTTMessage(data);
+ 
+         if (!raw || !parsed) {
+diff -ru /home/user/zigbee2mqtt/lib/extension/health.ts lib/extension/health.ts
+--- /home/user/zigbee2mqtt/lib/extension/health.ts	2026-10-02 14:07:51.918845139 +0000
++++ lib/extension/health.ts	2026-10-02 14:25:11.788598144 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="../types/types.d.ts" />
+ import * as os from "node:os";
+ import * as process from "node:process";
+ import type {Zigbee2MQTTAPI} from "../types/api";
+diff -ru /home/user/zigbee2mqtt/lib/extension/homeassistant.ts lib/extension/homeassistant.ts
+--- /home/user/zigbee2mqtt/lib/extension/homeassistant.ts	2026-10-02 14:07:51.918845139 +0000
++++ lib/extension/homeassistant.ts	2026-10-02 14:25:11.739395065 +0000
+@@ -1,5 +1,5 @@
++/// <reference path="../types/types.d.ts" />
+ import assert from "node:assert";
+-import bind from "bind-decorator";
+ import type * as zhc from "zigbee-herdsman-converters";
+ import type {Zh} from "zigbee-herdsman-converters/lib/types";
+ import logger from "../util/logger";
+@@ -1453,7 +1453,7 @@
+         return discoveryEntries;
+     }
+ 
+-    @bind async onEntityRemoved(data: eventdata.EntityRemoved): Promise<void> {
++    async onEntityRemoved(data: eventdata.EntityRemoved): Promise<void> {
+         logger.debug(`Clearing Home Assistant discovery for '${data.name}'`);
+         const discovered = this.getDiscovered(data.entity.ID);
+ 
+@@ -1464,11 +1464,11 @@
+         delete this.discovered[data.entity.ID];
+     }
+ 
+-    @bind async onGroupMembersChanged(data: eventdata.GroupMembersChanged): Promise<void> {
++    async onGroupMembersChanged(data: eventdata.GroupMembersChanged): Promise<void> {
+         await this.discover(data.group);
+     }
+ 
+-    @bind async onPublishEntityState(data: eventdata.PublishEntityState): Promise<void> {
++    async onPublishEntityState(data: eventdata.PublishEntityState): Promise<void> {
+         /**
+          * In case we deal with a lightEndpoint configuration Zigbee2MQTT publishes
+          * e.g. {state_l1: ON, brightness_l1: 250} to zigbee2mqtt/mydevice.
+@@ -1536,7 +1536,7 @@
+         }
+     }
+ 
+-    @bind async onEntityRenamed(data: eventdata.EntityRenamed): Promise<void> {
++    async onEntityRenamed(data: eventdata.EntityRenamed): Promise<void> {
+         logger.debug(`Refreshing Home Assistant discovery topic for '${data.entity.name}'`);
+ 
+         // Clear before rename so Home Assistant uses new friendly_name
+@@ -1985,7 +1985,7 @@
+         }
+     }
+ 
+-    @bind private async onMQTTMessage(data: eventdata.MQTTMessage): Promise<void> {
++    private async onMQTTMessage(data: eventdata.MQTTMessage): Promise<void> {
+         const discoveryMatch = data.topic.match(this.discoveryRegex);
+         const isDeviceAutomation = discoveryMatch && discoveryMatch[1] === "device_automation";
+         if (discoveryMatch) {
+@@ -2051,13 +2051,13 @@
+         }
+     }
+ 
+-    @bind async onZigbeeEvent(data: {device: Device}): Promise<void> {
++    async onZigbeeEvent(data: {device: Device}): Promise<void> {
+         if (!this.getDiscovered(data.device).discovered) {
+             await this.discover(data.device);
+         }
+     }
+ 
+-    @bind async onScenesChanged(data: eventdata.ScenesChanged): Promise<void> {
++    async onScenesChanged(data: eventdata.ScenesChanged): Promise<void> {
+         // Re-trigger MQTT discovery of changed devices and groups, similar to bridge.ts
+ 
+         // First, clear existing scene discovery topics
+diff -ru /home/user/zigbee2mqtt/lib/extension/networkMap.ts lib/extension/networkMap.ts
+--- /home/user/zigbee2mqtt/lib/extension/networkMap.ts	2026-10-02 14:07:51.918845139 +0000
++++ lib/extension/networkMap.ts	2026-10-02 14:25:11.924003888 +0000
+@@ -1,4 +1,4 @@
+-import bind from "bind-decorator";
++/// <reference path="../types/types.d.ts" />
+ import type {Eui64} from "zigbee-herdsman/dist/zspec/tstypes";
+ import type {LQITableEntry, RoutingTableEntry} from "zigbee-herdsman/dist/zspec/zdo/definition/tstypes";
+ import type {Zigbee2MQTTAPI, Zigbee2MQTTNetworkMap} from "../types/api";
+@@ -21,7 +21,7 @@
+         this.eventBus.onMQTTMessage(this, this.onMQTTMessage);
+     }
+ 
+-    @bind async onMQTTMessage(data: eventdata.MQTTMessage): Promise<void> {
++    async onMQTTMessage(data: eventdata.MQTTMessage): Promise<void> {
+         if (data.topic === this.#topic) {
+             const message = utils.parseJSON(data.message, data.message) as Zigbee2MQTTAPI["bridge/request/networkmap"];
+ 
+diff -ru /home/user/zigbee2mqtt/lib/extension/onEvent.ts lib/extension/onEvent.ts
+--- /home/user/zigbee2mqtt/lib/extension/onEvent.ts	2026-10-02 14:07:51.918845139 +0000
++++ lib/extension/onEvent.ts	2026-10-02 14:25:11.892421493 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="../types/types.d.ts" />
+ import {onEvent, type OnEvent as ZhcOnEvent} from "zigbee-herdsman-converters";
+ 
+ import utils from "../util/utils";
+diff -ru /home/user/zigbee2mqtt/lib/extension/otaUpdate.ts lib/extension/otaUpdate.ts
+--- /home/user/zigbee2mqtt/lib/extension/otaUpdate.ts	2026-10-02 14:07:51.918845139 +0000
++++ lib/extension/otaUpdate.ts	2026-10-02 14:25:11.940469352 +0000
+@@ -1,7 +1,7 @@
++/// <reference path="../types/types.d.ts" />
+ import assert from "node:assert";
+ import {existsSync, mkdirSync, rmSync, writeFileSync} from "node:fs";
+ import {join} from "node:path";
+-import bind from "bind-decorator";
+ import {setOtaConfiguration, Zcl} from "zigbee-herdsman";
+ import type {OtaDataSettings, OtaSource, OtaUpdateAvailableResult} from "zigbee-herdsman/dist/controller/tstype";
+ import Device from "../model/device";
+@@ -89,7 +89,7 @@
+         }
+     }
+ 
+-    @bind private async onZigbeeEvent(data: eventdata.DeviceMessage): Promise<void> {
++    private async onZigbeeEvent(data: eventdata.DeviceMessage): Promise<void> {
+         if (data.type !== "commandQueryNextImageRequest" || !data.device.definition || this.#inProgress.has(data.device.ieeeAddr)) {
+             return;
+         }
+@@ -236,7 +236,7 @@
+         return {update};
+     }
+ 
+-    @bind async onMQTTMessage(data: eventdata.MQTTMessage): Promise<void> {
++    async onMQTTMessage(data: eventdata.MQTTMessage): Promise<void> {
+         const topicMatch = data.topic.match(this.#topicRegex);
+ 
+         if (!topicMatch) {
+diff -ru /home/user/zigbee2mqtt/lib/extension/publish.ts lib/extension/publish.ts
+--- /home/user/zigbee2mqtt/lib/extension/publish.ts	2026-10-02 14:07:51.918845139 +0000
++++ lib/extension/publish.ts	2026-10-02 14:25:11.747041706 +0000
+@@ -1,4 +1,4 @@
+-import bind from "bind-decorator";
++/// <reference path="../types/types.d.ts" />
+ import type * as zhc from "zigbee-herdsman-converters";
+ import Device from "../model/device";
+ import Group from "../model/group";
+@@ -89,7 +89,7 @@
+         }
+     }
+ 
+-    @bind async onMQTTMessage(data: eventdata.MQTTMessage): Promise<void> {
++    async onMQTTMessage(data: eventdata.MQTTMessage): Promise<void> {
+         const parsedTopic = this.parseTopic(data.topic);
+ 
+         if (!parsedTopic) {
+diff -ru /home/user/zigbee2mqtt/lib/extension/receive.ts lib/extension/receive.ts
+--- /home/user/zigbee2mqtt/lib/extension/receive.ts	2026-10-02 14:07:51.918845139 +0000
++++ lib/extension/receive.ts	2026-10-02 14:25:11.875971595 +0000
+@@ -1,5 +1,5 @@
++/// <reference path="../types/types.d.ts" />
+ import assert from "node:assert";
+-import bind from "bind-decorator";
+ import debounce from "debounce";
+ import throttle from "throttleit";
+ import * as zhc from "zigbee-herdsman-converters";
+@@ -23,7 +23,7 @@
+         this.eventBus.onDeviceMessage(this, this.onDeviceMessage);
+     }
+ 
+-    @bind onPublishEntityState(data: eventdata.PublishEntityState): void {
++    onPublishEntityState(data: eventdata.PublishEntityState): void {
+         /**
+          * Prevent that outdated properties are being published.
+          * In case that e.g. the state is currently held back by a debounce and a new state is published
+@@ -99,7 +99,7 @@
+         return result;
+     }
+ 
+-    @bind async onDeviceMessage(data: eventdata.DeviceMessage): Promise<void> {
++    async onDeviceMessage(data: eventdata.DeviceMessage): Promise<void> {
+         /* v8 ignore next */
+         if (!data.device) return;
+ 
+diff -ru /home/user/zigbee2mqtt/lib/model/device.ts lib/model/device.ts
+--- /home/user/zigbee2mqtt/lib/model/device.ts	2026-10-02 14:07:51.918845139 +0000
++++ lib/model/device.ts	2026-10-02 14:25:11.627864986 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="../types/types.d.ts" />
+ import assert from "node:assert";
+ import {InterviewState} from "zigbee-herdsman/dist/controller/model/device";
+ import type {OtaExtraMetas} from "zigbee-herdsman/dist/controller/tstype";
+diff -ru /home/user/zigbee2mqtt/lib/model/group.ts lib/model/group.ts
+--- /home/user/zigbee2mqtt/lib/model/group.ts	2026-10-02 14:07:51.921928417 +0000
++++ lib/model/group.ts	2026-10-02 14:25:11.620587768 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="../types/types.d.ts" />
+ import type * as zhc from "zigbee-herdsman-converters";
+ import * as settings from "../util/settings";
+ import {DEFAULT_BIND_GROUP_ID} from "../util/utils";
+diff -ru /home/user/zigbee2mqtt/lib/mqtt.ts lib/mqtt.ts
+--- /home/user/zigbee2mqtt/lib/mqtt.ts	2026-10-02 14:07:51.921928417 +0000
++++ lib/mqtt.ts	2026-10-02 14:25:11.608683388 +0000
+@@ -1,5 +1,5 @@
++/// <reference path="types/types.d.ts" />
+ import fs from "node:fs";
+-import bind from "bind-decorator";
+ import type {IClientOptions, IClientPublishOptions, MqttClient} from "mqtt";
+ import {connectAsync} from "mqtt";
+ import type {Zigbee2MQTTAPI} from "./types/api";
+@@ -175,7 +175,7 @@
+         await this.client.unsubscribeAsync(topic);
+     }
+ 
+-    @bind private async onConnect(): Promise<void> {
++    private async onConnect(): Promise<void> {
+         logger.info("Connected to MQTT server");
+ 
+         const stateData: Zigbee2MQTTAPI["bridge/state"] = {state: "online"};
+@@ -184,7 +184,7 @@
+         await this.subscribe(`${settings.get().mqtt.base_topic}/#`);
+     }
+ 
+-    @bind public onMessage(topic: string, message: Buffer): void {
++    public onMessage(topic: string, message: Buffer): void {
+         // Since we subscribe to zigbee2mqtt/# we also receive the message we send ourselves, skip these.
+         if (!this.publishedTopics.has(topic)) {
+             logger.debug(() => `Received MQTT message on '${topic}' with data '${message.toString()}'`, NS);
+Only in lib: nativeEntry.ts
+diff -ru /home/user/zigbee2mqtt/lib/state.ts lib/state.ts
+--- /home/user/zigbee2mqtt/lib/state.ts	2026-10-02 14:07:51.921928417 +0000
++++ lib/state.ts	2026-10-02 14:25:11.976562972 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="types/types.d.ts" />
+ import {existsSync, readFileSync, writeFileSync} from "node:fs";
+ 
+ import data from "./util/data";
+diff -ru /home/user/zigbee2mqtt/lib/types/types.d.ts lib/types/types.d.ts
+--- /home/user/zigbee2mqtt/lib/types/types.d.ts	2026-10-02 14:07:51.922306234 +0000
++++ lib/types/types.d.ts	2026-10-02 14:28:21.904733881 +0000
+@@ -1,3 +1,6 @@
++/// <reference path="./dom.shim.d.ts" />
++/// <reference path="./unix-dgram.d.ts" />
++/// <reference path="./zigbee2mqtt-frontend.d.ts" />
+ import type {AdapterTypes as ZHAdapterTypes, Events as ZHEvents, Models as ZHModels} from "zigbee-herdsman";
+ import type {Cluster as ZHCluster, FrameControl as ZHFrameControl} from "zigbee-herdsman/dist/zspec/zcl/definition/tstype";
+ 
+diff -ru /home/user/zigbee2mqtt/lib/util/data.ts lib/util/data.ts
+--- /home/user/zigbee2mqtt/lib/util/data.ts	2026-10-02 14:07:51.922306234 +0000
++++ lib/util/data.ts	2026-10-02 14:25:11.710776097 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="../types/types.d.ts" />
+ import path from "node:path";
+ 
+ function setPath(): string {
+diff -ru /home/user/zigbee2mqtt/lib/util/logger.ts lib/util/logger.ts
+--- /home/user/zigbee2mqtt/lib/util/logger.ts	2026-10-02 14:07:51.922464416 +0000
++++ lib/util/logger.ts	2026-10-02 14:25:11.682183986 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="../types/types.d.ts" />
+ import assert from "node:assert";
+ import fs from "node:fs";
+ import path from "node:path";
+diff -ru /home/user/zigbee2mqtt/lib/util/objectAssignDeep.ts lib/util/objectAssignDeep.ts
+--- /home/user/zigbee2mqtt/lib/util/objectAssignDeep.ts	2026-10-02 14:07:51.922464416 +0000
++++ lib/util/objectAssignDeep.ts	2026-10-02 14:25:11.703732574 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="../types/types.d.ts" />
+ /** Anything mergeable: a plain-ish object, explicitly not an array or another iterable. */
+ export type UnknownRecord = Record<string | number, unknown> & {[Symbol.iterator]?: never};
+ 
+diff -ru /home/user/zigbee2mqtt/lib/util/onboarding.ts lib/util/onboarding.ts
+--- /home/user/zigbee2mqtt/lib/util/onboarding.ts	2026-10-02 14:07:51.922464416 +0000
++++ lib/util/onboarding.ts	2026-10-02 14:25:11.689182756 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="../types/types.d.ts" />
+ import {existsSync, mkdirSync, writeFileSync} from "node:fs";
+ import {createServer} from "node:http";
+ import path from "node:path";
+diff -ru /home/user/zigbee2mqtt/lib/util/sd-notify.ts lib/util/sd-notify.ts
+--- /home/user/zigbee2mqtt/lib/util/sd-notify.ts	2026-10-02 14:07:51.922464416 +0000
++++ lib/util/sd-notify.ts	2026-10-02 14:25:11.668113866 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="../types/types.d.ts" />
+ import {platform} from "node:os";
+ import type {UnixDgramSocket} from "unix-dgram";
+ 
+diff -ru /home/user/zigbee2mqtt/lib/util/settings.ts lib/util/settings.ts
+--- /home/user/zigbee2mqtt/lib/util/settings.ts	2026-10-02 14:07:51.922464416 +0000
++++ lib/util/settings.ts	2026-10-02 14:25:11.653709043 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="../types/types.d.ts" />
+ import path from "node:path";
+ import type {ValidateFunction} from "ajv";
+ import Ajv from "ajv";
+diff -ru /home/user/zigbee2mqtt/lib/util/settingsMigration.ts lib/util/settingsMigration.ts
+--- /home/user/zigbee2mqtt/lib/util/settingsMigration.ts	2026-10-02 14:07:51.922464416 +0000
++++ lib/util/settingsMigration.ts	2026-10-02 14:25:11.635074412 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="../types/types.d.ts" />
+ import {copyFileSync, existsSync, readFileSync, writeFileSync} from "node:fs";
+ import data from "./data";
+ import * as settings from "./settings";
+diff -ru /home/user/zigbee2mqtt/lib/util/staticFileServer.ts lib/util/staticFileServer.ts
+--- /home/user/zigbee2mqtt/lib/util/staticFileServer.ts	2026-10-02 14:07:51.922464416 +0000
++++ lib/util/staticFileServer.ts	2026-10-02 14:25:11.642366869 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="../types/types.d.ts" />
+ import type {IncomingMessage, ServerResponse} from "node:http";
+ import {NodeRequest, sendNodeResponse} from "srvx/node";
+ import {staticMiddleware} from "srvx/static";
+diff -ru /home/user/zigbee2mqtt/lib/util/stringify.ts lib/util/stringify.ts
+--- /home/user/zigbee2mqtt/lib/util/stringify.ts	2026-10-02 14:07:51.922464416 +0000
++++ lib/util/stringify.ts	2026-10-02 14:25:11.675217635 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="../types/types.d.ts" />
+ // Stable stringify inspired by https://github.com/BridgeAR/safe-stable-stringify
+ // Takes advantage of Node env and Z2M's object-only use-case.
+ 
+diff -ru /home/user/zigbee2mqtt/lib/util/utils.ts lib/util/utils.ts
+--- /home/user/zigbee2mqtt/lib/util/utils.ts	2026-10-02 14:07:51.922464416 +0000
++++ lib/util/utils.ts	2026-10-02 14:25:11.660835882 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="../types/types.d.ts" />
+ import assert from "node:assert";
+ import {exec} from "node:child_process";
+ import crypto from "node:crypto";
+diff -ru /home/user/zigbee2mqtt/lib/util/yaml.ts lib/util/yaml.ts
+--- /home/user/zigbee2mqtt/lib/util/yaml.ts	2026-10-02 14:07:51.922464416 +0000
++++ lib/util/yaml.ts	2026-10-02 14:25:11.696418691 +0000
+@@ -1,3 +1,4 @@
++/// <reference path="../types/types.d.ts" />
+ import assert from "node:assert";
+ import fs from "node:fs";
+ 
+diff -ru /home/user/zigbee2mqtt/lib/zigbee.ts lib/zigbee.ts
+--- /home/user/zigbee2mqtt/lib/zigbee.ts	2026-10-02 14:07:51.922464416 +0000
++++ lib/zigbee.ts	2026-10-02 14:25:11.725051477 +0000
+@@ -1,5 +1,5 @@
++/// <reference path="types/types.d.ts" />
+ import {randomInt} from "node:crypto";
+-import bind from "bind-decorator";
+ import type {Events as ZHEvents} from "zigbee-herdsman";
+ import {Controller} from "zigbee-herdsman";
+ import type {StartResult} from "zigbee-herdsman/dist/adapter/tstype";
+@@ -283,7 +283,7 @@
+         }
+     }
+ 
+-    @bind private resolveDevice(ieeeAddr: string): Device | undefined {
++    private resolveDevice(ieeeAddr: string): Device | undefined {
+         if (!this.deviceLookup.has(ieeeAddr)) {
+             const device = this.#herdsman.getDeviceByIeeeAddr(ieeeAddr);
+             if (device) {
+@@ -406,7 +406,7 @@
+     }
+ 
+     // biome-ignore lint/suspicious/useAwait: API
+-    @bind private async acceptJoiningDeviceHandler(ieeeAddr: string): Promise<boolean> {
++    private async acceptJoiningDeviceHandler(ieeeAddr: string): Promise<boolean> {
+         // If passlist is set, all devices not on passlist will be rejected to join the network
+         const passlist = settings.get().passlist;
+         const blocklist = settings.get().blocklist;

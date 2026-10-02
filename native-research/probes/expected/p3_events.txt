@@ -1,0 +1,4 @@
+got zigbee2mqtt/lamp {"state":"ON"}
+closed once
+listeners 1
+after 0

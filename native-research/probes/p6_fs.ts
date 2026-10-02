@@ -1,0 +1,12 @@
+import * as fs from "node:fs";
+import * as path from "node:path";
+import * as os from "node:os";
+const dir = fs.mkdtempSync(path.join(os.tmpdir(), "z2m-"));
+const f = path.join(dir, "configuration.yaml");
+fs.writeFileSync(f, "mqtt:\n  server: mqtt://localhost\n", "utf8");
+console.log(fs.existsSync(f), fs.readFileSync(f, "utf8").split("\n")[1].trim(), fs.statSync(f).size);
+fs.mkdirSync(path.join(dir, "log", "a"), {recursive: true});
+console.log(fs.readdirSync(dir).sort().join(","));
+fs.renameSync(f, f + ".bak"); fs.unlinkSync(f + ".bak"); fs.rmSync(dir, {recursive: true, force: true});
+console.log("exists after", fs.existsSync(dir), path.basename("/a/b/c.json", ".json"), process.platform);
+console.log("env", typeof process.env.HOME, process.argv.length >= 1);

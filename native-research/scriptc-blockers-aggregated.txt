@@ -1,0 +1,43 @@
+     54 values of type '<long type>' cannot be compiled yet (supported: number, string, boolean, arrays, Maps, Sets, RegExp, read-only Date values, functions, classes, records, unions of those, and 'unknown')  SC2001
+     30 '__dirname' in an ES module (Node defines the CJS module globals only in CommonJS modules)  SC1090
+     29 multi-declaration for-loop initializers  SC1090
+     29 'any[]' values where 'number[]' is expected  SC1090
+     28 a checked cast of 'any' to 'any' (an 'any' value can only be validated against JSON-representable types: number, string, boolean, records, arrays, and unions of those)  SC1090
+     28 'instanceof' right-hand sides other than classes declared in the program  SC1090
+     27 values of type '[Partial<Zigbee2MQTTSettings>]'<long type>'unknown')  SC2001
+     27 uses of 's' inherit the blocker on its declaration  SC2004
+     27 uses of 'interpretValue' inherit the blocker on its declaration  SC2004
+     27 the reference to 'schemaJson' (a binding form with no lowering)  SC1090
+     27 generic arrow/function-expression bindings declared inside functions (the compiled instantiations of 'interpretValue' are module functions and cannot capture the enclosing frame — declare the binding at module scope)  SC
+     27 functions with this signature crossing into dynamically-executed code (a callback passed to a package/'any' API may take 'any'<long type>'any'<long type>'T | undefined'), and return 'any', void, number, string, boolean, a 
+     27 for-in over 'KeyValue' receivers (records, index-signature shapes, arrays, and globalThis enumerate)  SC1052
+     27 'Array.isArray' is part of the standard library types but has no scriptc lowering yet  SC2020
+     27 '.test()' on a regex with the 'g' or 'y' flag  SC1121
+     24 values of type '<long type>' cannot be compiled: the record shape is supported, but its member 'isAvailabilityEnabledForEntity' has type '<long type>', which does not compile  SC2009
+     16 values of type 'Zigbee'<long type>'eventBus' has type 'EventBus', which does not compile  SC2009
+      6 'Object.keys' is part of the standard library types but has no scriptc lowering yet  SC2020
+      5 values of type 'Definition | undefined'<long type>'{ zigbeeModel: string[]; fingerprint?: Fingerprint[] | undefined; } & DefinitionBase & DefinitionConfig & DefinitionFeatures & Required<...>' does not compile  SC2009
+      5 reading 'options' from a value of type 'Device'  SC1090
+      5 reading 'enabled' from a value of type '<long type>'  SC1090
+      5 pushing a spread of 'string[]' onto a 'any[]' array (only a same-element-type array spreads)  SC1090
+      5 method calls like 'entity.isGroup'  SC1090
+      5 method calls like 'entity.isDevice'  SC1090
+      5 generator methods (a #private generator method compiles — privates never dispatch dynamically; or declare a module-level function* and call it from the method)  SC1071
+      5 for-in over 'object' receivers (records, index-signature shapes, arrays, and globalThis enumerate)  SC1052
+      5 dynamic import() with import attributes  SC1090
+      5 dynamic import() of computed specifiers (the module graph embeds at build time — the specifier must be a string literal)  SC1090
+      5 Error messages of type 'any' (the message must be a string)  SC1090
+      5 'writeFileSync with 3 arguments' is part of the standard library types but has no scriptc lowering yet  SC2020
+      5 'string | undefined.toLowerCase' is part of the standard library types but has no scriptc lowering yet  SC2020
+      5 'createHash with this algorithm' is part of the standard library types but has no scriptc lowering yet  SC2020
+      5 'child_process.exec' is typed by @types/node but has no scriptc lowering yet  SC2020
+      5 'any[]' values where 'string[]' is expected  SC1090
+      5 'Object.entries' is part of the standard library types but has no scriptc lowering yet  SC2020
+      4 function replacement values (replacements must be string templates)  SC1120
+      4 cannot embed npm package code: package 'srvx' requires 'node:http2', a Node builtin the island does not provide (available: node:events, node:path, node:process, node:fs, node:child_process, node:os, node:diagnostics_chann
+      2 the 'node:process' module  SC1010
+      2 reading 'base_topic' from a value of type '<long type>'  SC1090
+      2 object spread after explicit properties (spreads must come first — a later spread would overwrite them with JS semantics the desugar does not model)  SC1090
+      2 loose equality (== and !=)  SC1040
+      2 extending classes not declared in the program ('Extension')  SC1090
+      2 'delete' on 'any' receivers (process.env keys and pure Record<string, T> keys delete)  SC1090

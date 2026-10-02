@@ -1,0 +1,4 @@
+true server: mqtt://localhost 33
+configuration.yaml,log
+exists after false c linux
+env string true

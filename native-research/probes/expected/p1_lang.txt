@@ -1,0 +1,15 @@
+<lamp> device 42 1 true
+a=1,b=2 2
+0,2,4,6
+2 2,3
+ON brightness,color,extra {"state":"ON","brightness":254,"color":{"x":0.3,"y":0.4},"extra":[1,2,3]}
+num brightness
+false 0.3 dflt
+MyErr boom 7 true
+00124B0012345678 a+b*c
+true true true
+double:6 sq:9
+100000000
+123 3 1.00 255
+1970-01-01T00:00:00.000Z
+undefined null function 3

@@ -1,0 +1,136 @@
+scriptc coverage /home/user/native/z2m-work/lib/nativeEntry.ts
+
+  statements analyzed  798
+  compile statically  477  (59%)
+  compile dynamically  211  (26%) (island sites — the embedded engine runs them)
+  (+22 functions not analyzed — signature blocked)
+
+  embedded npm code imports Node builtins and unresolved specifiers:
+  node:assert  shimmed  (mqtt, zigbee-herdsman, zigbee-herdsman-converters, zigbee-on-host)
+  node:buffer  shimmed  (bl, dns-packet, mqtt, mqtt-packet, readable-stream, smart-buffer, ws)
+  node:child_process  shimmed  (@serialport/bindings-cpp)
+  node:crypto  shimmed  (ws, zigbee-herdsman, zigbee-on-host)
+  node:dgram  not shimmed — lazy trap  (multicast-dns, unix-dgram)
+  node:dns  shimmed  (mqtt)
+  node:events  shimmed  (@serialport/bindings-cpp, bonjour-service, mqtt, mqtt-packet, multicast-dns, readable-stream, socks, unix-dgram, ws, zigbee-herdsman)
+  node:fs  shimmed  (@serialport/bindings-cpp, bindings, node-gyp-build, srvx, winston, zigbee-herdsman, zigbee-herdsman-converters, zigbee-on-host)
+  node:fs/promises  shimmed  (srvx, zigbee-on-host)
+  node:http  shimmed  (srvx, winston, ws)
+  node:http2  not shimmed  (srvx)
+  node:https  shimmed  (srvx, winston, ws)
+  node:module  shimmed  (fflate)
+  node:net  shimmed  (mqtt, socks, ws, zigbee-herdsman)
+  node:os  shimmed  (@colors/colors, bonjour-service, multicast-dns, node-gyp-build, supports-color, winston, zigbee-herdsman)
+  node:path  shimmed  (@serialport/bindings-cpp, bindings, file-uri-to-path, node-gyp-build, srvx, winston, zigbee-herdsman, zigbee-on-host)
+  node:perf_hooks  shimmed  (zigbee-herdsman)
+  node:process/  not shimmed — lazy trap  (readable-stream)
+  node:stream  shimmed  (@serialport/parser-delimiter, @serialport/stream, mqtt, readable-stream, socks, srvx, ws, zigbee-herdsman, zigbee-on-host)
+  node:stream/promises  shimmed  (srvx)
+  node:string_decoder  shimmed  (winston)
+  node:string_decoder/  not shimmed — lazy trap  (readable-stream)
+  node:tls  shimmed  (mqtt, ws)
+  node:tty  shimmed  (@dabh/diagnostics, debug, supports-color)
+  node:url  shimmed  (mqtt, ws, zigbee-herdsman)
+  node:util  shimmed  (@colors/colors, @serialport/bindings-cpp, debug, inherits, logform, mqtt, readable-stream, unix-dgram, util-deprecate, winston, winston-transport, ws)
+  node:worker_threads  shimmed  (fflate)
+  node:zlib  shimmed  (srvx, winston, ws)
+  .  unresolvable — lazy trap  (require in @serialport/bindings-cpp)
+  bufferutil  unresolvable — lazy trap  (require in ws)
+  utf-8-validate  unresolvable — lazy trap  (require in ws)
+  (lazy trap: only reachable through require()/import() boundaries — the build embeds Node's call-time error; the call throws at runtime)
+
+  blockers:
+  ×1  values of type '{ type: string; properties: { homeassistant: { title: string; description: string; type: string; properties: { enabled: { type: string; title: string; description: string; default: boolean; requiresRestart: 
+  ×1  values of type '[{ homeassistant: { enabled: false; discovery_topic: string; status_topic: string; legacy_action_sensor: false; experimental_event_entities: false; }; availability: { enabled: false; active: { ...; }; passiv
+  ×1  values of type '[Partial<Zigbee2MQTTSettings>]' cannot be compiled yet (supported: number, string, boolean, arrays, Maps, Sets, RegExp, read-only Date values, functions, classes, records, unions of those, and 'unknown')  SC
+  ×1  values of type 'Definition | undefined' cannot be compiled: the union shape is supported, but its arm '{ zigbeeModel: string[]; fingerprint?: Fingerprint[] | undefined; } & DefinitionBase & DefinitionConfig & DefinitionFeat
+  ×1  values of type 'Set<Extension>' cannot be compiled: the Set shape is supported, but elements are limited to numbers and strings — 'Extension' is outside that domain  SC2009
+  ×1  the 'node:process' module  SC1010
+  ×1  loose equality (== and !=)  SC1040
+  ×1  for-in over 'object' receivers (records, index-signature shapes, arrays, and globalThis enumerate)  SC1052
+  ×1  for-in over 'KeyValue' receivers (records, index-signature shapes, arrays, and globalThis enumerate)  SC1052
+  ×4  uses of 's' inherit the blocker on its declaration  SC2004
+  ×3  functions with this signature crossing into dynamically-executed code (a callback passed to a package/'any' API may take 'any' parameters — leave them unannotated so contextual typing keeps them 'any' — or parameters co
+  ×3  'Object.keys' is part of the standard library types but has no scriptc lowering yet  SC2020
+  ×2  'any[]' values where 'string[]' is expected  SC1090
+  ×2  'instanceof' right-hand sides other than classes declared in the program  SC1090
+  ×2  a checked cast of 'any' to 'any' (an 'any' value can only be validated against JSON-representable types: number, string, boolean, records, arrays, and unions of those)  SC1090
+  ×2  the reference to 'schemaJson' (a binding form with no lowering)  SC1090
+  ×2  uses of 'controller' inherit the blocker on its declaration  SC2004
+  ×2  'Object.entries' is part of the standard library types but has no scriptc lowering yet  SC2020
+  ×2  'string | undefined.toLowerCase' is part of the standard library types but has no scriptc lowering yet  SC2020
+  ×2  'Array.isArray' is part of the standard library types but has no scriptc lowering yet  SC2020
+  ×1  generator methods (a #private generator method compiles — privates never dispatch dynamically; or declare a module-level function* and call it from the method)  SC1071
+  ×1  '__dirname' in an ES module (Node defines the CJS module globals only in CommonJS modules)  SC1090
+  ×1  dynamic import() with import attributes  SC1090
+  ×1  dynamic import() of computed specifiers (the module graph embeds at build time — the specifier must be a string literal)  SC1090
+  ×1  multi-declaration for-loop initializers  SC1090
+  ×1  'any[]' values where 'number[]' is expected  SC1090
+  ×1  pushing a spread of 'string[]' onto a 'any[]' array (only a same-element-type array spreads)  SC1090
+  ×1  Error messages of type 'any' (the message must be a string)  SC1090
+  ×1  method calls like 'entity.isDevice'  SC1090
+  ×1  method calls like 'entity.isGroup'  SC1090
+  ×1  reading 'options' from a value of type 'Device'  SC1090
+  ×1  reading 'enabled' from a value of type '{ enabled: boolean; active: { timeout: number; max_jitter: number; backoff: boolean; pause_on_backoff_gt: number; }; passive: { timeout: number; }; }'  SC1090
+  ×1  generic arrow/function-expression bindings declared inside functions (the compiled instantiations of 'interpretValue' are module functions and cannot capture the enclosing frame — declare the binding at module scope)  SC1
+  ×1  constructing through a class value whose class has no lowering (the class declaration itself was rejected — see its own diagnostic)  SC1090
+  ×1  method calls like 'controller.start'  SC1090
+  ×1  object spread after explicit properties (spreads must come first — a later spread would overwrite them with JS semantics the desugar does not model)  SC1090
+  ×1  reading 'base_topic' from a value of type '{ base_topic: string; include_device_information: boolean; force_disable_retain: boolean; version?: 3 | 4 | 5 | undefined; user?: string | undefined; password?: string | undefined;
+  ×1  'delete' on 'any' receivers (process.env keys and pure Record<string, T> keys delete)  SC1090
+  ×1  function replacement values (replacements must be string templates)  SC1120
+  ×1  '.test()' on a regex with the 'g' or 'y' flag  SC1121
+  ×1  uses of 'interpretValue' inherit the blocker on its declaration  SC2004
+  ×1  'child_process.exec' is typed by @types/node but has no scriptc lowering yet  SC2020
+  ×1  'createHash with this algorithm' is part of the standard library types but has no scriptc lowering yet  SC2020
+  ×1  'writeFileSync with 3 arguments' is part of the standard library types but has no scriptc lowering yet  SC2020
+  ×1  cannot embed npm package code: package 'srvx' requires 'node:http2', a Node builtin the island does not provide (available: node:events, node:path, node:process, node:fs, node:child_process, node:os, node:diagnostics_channe
+
+  in unreached code  (never lowered — cannot fail a build)
+  ×2  values of type '[KeyValue]' cannot be compiled yet (supported: number, string, boolean, arrays, Maps, Sets, RegExp, read-only Date values, functions, classes, records, unions of those, and 'unknown')  SC2001
+  ×1  values of type '[Partial<Zigbee2MQTTSettings>, Record<string, unknown>]' cannot be compiled yet (supported: number, string, boolean, arrays, Maps, Sets, RegExp, read-only Date values, functions, classes, records, unions of 
+  ×1  values of type '(a: KeyValue, b: KeyValue) => number' cannot be compiled yet (supported: number, string, boolean, arrays, Maps, Sets, RegExp, read-only Date values, functions, classes, records, unions of those, and 'unknown
+  ×1  values of type '{ [s: string]: Discovered; }' cannot be compiled: this index signature is outside the supported shape (string or number keys; values limited to numbers, strings, booleans, records, classes, arrays, unions, f
+  ×1  values of type 'Map<string, { event: keyof EventBusMap; callback: (() => void | Promise<void>) | ((data: DeviceAnnounce) => void | Promise<void>) | ... 19 more ... | ((data: StateChange) => void | Promise<...>); }[]>' canno
+  ×1  values of type 'Map<string | number, boolean>' cannot be compiled: the Map shape is supported, but keys are limited to numbers and strings — 'string | number' is outside that domain  SC2009
+  ×1  values of type 'Map<string | number, KeyValue>' cannot be compiled: the Map shape is supported, but keys are limited to numbers and strings — 'string | number' is outside that domain  SC2009
+  ×1  for-in over '{ [s: string]: Zigbee2MQTTDeviceOptions; }' receivers (records, index-signature shapes, arrays, and globalThis enumerate)  SC1052
+  ×1  for-in over '{ [s: string]: Omit<Zigbee2MQTTGroupOptions, "ID">; }' receivers (records, index-signature shapes, arrays, and globalThis enumerate)  SC1052
+  ×11  overriding the async method 'start' (async methods dispatch statically — the vtable slot machinery has no fiber-spawn story)  SC1090
+  ×7  uses of 'utils' inherit the blocker on its declaration  SC2004
+  ×6  'delete' on 'any' receivers (process.env keys and pure Record<string, T> keys delete)  SC1090
+  ×4  reading 'base_topic' from a value of type '{ base_topic: string; include_device_information: boolean; force_disable_retain: boolean; version?: 3 | 4 | 5 | undefined; user?: string | undefined; password?: string | undefined;
+  ×2  method calls like 'this.eventBus.removeListeners'  SC1090
+  ×2  element access on checked-dynamic values with 'any[]' elements  SC1090
+  ×2  extending the generic class 'ExternalJSExtension' without a compiled concrete instantiation (the type arguments must map — see the instantiation's own diagnostic)  SC1090
+  ×2  'Object.entries' is part of the standard library types but has no scriptc lowering yet  SC2020
+  ×2  'clearTimeout of 'number | undefined' handles' is part of the standard library types but has no scriptc lowering yet  SC2020
+  ×1  generator methods (a #private generator method compiles — privates never dispatch dynamically; or declare a module-level function* and call it from the method)  SC1071
+  ×1  'in' on 'any' receivers (only process.env, Error instances, record-typed values, and unions of fixed record shapes answer; narrow first: check a discriminant field, or compare with '!== undefined'/'!== null' for unit arms) 
+  ×1  reading 'version' from a value of type '{ base_topic: string; include_device_information: boolean; force_disable_retain: boolean; version?: 3 | 4 | 5 | undefined; user?: string | undefined; password?: string | undefined; se
+  ×1  'any[]' values where 'string[]' is expected  SC1090
+  ×1  object spread after explicit properties (or mixed with a conditional spread) in an 'any'-typed object literal — spreads must come first  SC1090
+  ×1  'instanceof' right-hand sides other than classes declared in the program  SC1090
+  ×1  bound method references (call 'onMessage' directly)  SC1090
+  ×1  bound method references (call 'onConnect' directly)  SC1090
+  ×1  method calls like 'this.eventBus.emitMQTTMessage'  SC1090
+  ×1  method calls like 'this.eventBus.emitMQTTMessagePublished'  SC1090
+  ×1  reading 'force_disable_retain' from a value of type '{ base_topic: string; include_device_information: boolean; force_disable_retain: boolean; version?: 3 | 4 | 5 | undefined; user?: string | undefined; password?: string | 
+  ×1  functions with this signature crossing into dynamically-executed code (a callback passed to a package/'any' API may take 'any' parameters — leave them unannotated so contextual typing keeps them 'any' — or parameters co
+  ×1  passing a value of type 'IncomingMessage' into dynamically-executed ('any'-typed) code (only numbers, strings, booleans, typed arrays, URLs, undefined/null-armed unions, and JSON-safe records/arrays/unions can cross the bou
+  ×1  passing a value of type 'ServerResponse' into dynamically-executed ('any'-typed) code (only numbers, strings, booleans, typed arrays, URLs, undefined/null-armed unions, and JSON-safe records/arrays/unions can cross the boun
+  ×1  extending classes not declared in the program ('YAMLException')  SC1090
+  ×1  overriding the async method 'start' (async methods dispatch statically — the vtable slot machinery has no fiber-spawn story) is not supported yet (instantiating class 'ExternalJSExtension' with <any>)  SC1090
+  ×1  overriding the async method 'start' (async methods dispatch statically — the vtable slot machinery has no fiber-spawn story) is not supported yet (instantiating class 'ExternalJSExtension' with <typeof m7.Extension>)  SC1
+  ×1  record shapes must match exactly or width-coerce: expected '{ base_topic: string; ca: string | undefined; cert: string | undefined; client_id: string | undefined; force_disable_retain: boolean; include_device_information: b
+  ×1  uses of 'controller' inherit the blocker on its declaration  SC2004
+  ×1  'new Array(count)' is part of the standard library types but has no scriptc lowering yet  SC2020
+  ×1  'Number of number | string values' is part of the standard library types but has no scriptc lowering yet  SC2020
+  ×1  'fs.symlinkSync' is typed by @types/node but has no scriptc lowering yet  SC2020
+  ×1  'require' is typed by @types/node but has no scriptc lowering yet  SC2020
+  ×1  'RegExp.toString' is part of the standard library types but has no scriptc lowering yet  SC2020
+  ×1  'Stats.mtime' is typed by @types/node but has no scriptc lowering yet  SC2020
+  ×1  'ArrayBuffer.isView' is part of the standard library types but has no scriptc lowering yet  SC2020
+  ×1  'Object.values' is part of the standard library types but has no scriptc lowering yet  SC2020
+  ×1  'Error.stack' is part of the standard library types but has no scriptc lowering yet  SC2020
+  ×1  'string | null.startsWith' is part of the standard library types but has no scriptc lowering yet  SC2020

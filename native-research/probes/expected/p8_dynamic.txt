@@ -1,0 +1,4 @@
+{"state":"ON","brightness":200}
+true 3 string
+2 7
+{"state":"OFF"}
