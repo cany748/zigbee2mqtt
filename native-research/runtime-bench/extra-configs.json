@@ -1,0 +1,160 @@
+{
+ "node22 esbuild bundle": [
+  {},
+  [
+   "node",
+   "node-bundle/fake-run.cjs"
+  ]
+ ],
+ "node22 esbuild bundle semi=1 lite": [
+  {},
+  [
+   "node",
+   "--max-semi-space-size=1",
+   "--lite-mode",
+   "node-bundle/fake-run.cjs"
+  ]
+ ],
+ "deno esbuild bundle": [
+  {},
+  [
+   "/home/user/engines/node_modules/.bin/deno",
+   "run",
+   "-A",
+   "--unstable-detect-cjs",
+   "node-bundle/fake-run.cjs"
+  ]
+ ],
+ "bun bytecode (zhc external)": [
+  {},
+  [
+   "bun",
+   "bun-bc-ext/fake-run.js"
+  ]
+ ],
+ "bun --smol bytecode (zhc external)": [
+  {},
+  [
+   "bun",
+   "--smol",
+   "bun-bc-ext/fake-run.js"
+  ]
+ ],
+ "bun bytecode (static devices)": [
+  {},
+  [
+   "bun",
+   "bun-bc-static/fake-run.js"
+  ]
+ ],
+ "bun --compile --bytecode": [
+  {},
+  [
+   "bun-exe/bun-exe/z2m-fake"
+  ]
+ ],
+ "bun --compile --bytecode JIT off": [
+  {
+   "BUN_JSC_useJIT": "0"
+  },
+  [
+   "bun-exe/bun-exe/z2m-fake"
+  ]
+ ],
+ "node22 semi=1 no-opt/maglev/sparkplug": [
+  {},
+  [
+   "node",
+   "--max-semi-space-size=1",
+   "--no-opt",
+   "--no-maglev",
+   "--no-sparkplug",
+   "fake-run.cjs"
+  ]
+ ],
+ "node22 semi=1 optimize-for-size": [
+  {},
+  [
+   "node",
+   "--max-semi-space-size=1",
+   "--optimize-for-size",
+   "fake-run.cjs"
+  ]
+ ],
+ "node22 semi=1 ofs no-opt/maglev": [
+  {},
+  [
+   "node",
+   "--max-semi-space-size=1",
+   "--optimize-for-size",
+   "--no-opt",
+   "--no-maglev",
+   "fake-run.cjs"
+  ]
+ ],
+ "node22 semi=1 ofs no-opt/maglev old=96": [
+  {},
+  [
+   "node",
+   "--max-semi-space-size=1",
+   "--optimize-for-size",
+   "--no-opt",
+   "--no-maglev",
+   "--max-old-space-size=96",
+   "fake-run.cjs"
+  ]
+ ],
+ "node24 semi=1 ofs no-opt/maglev": [
+  {},
+  [
+   "/home/user/native/tools/node24/bin/node",
+   "--max-semi-space-size=1",
+   "--optimize-for-size",
+   "--no-opt",
+   "--no-maglev",
+   "fake-run.cjs"
+  ]
+ ],
+ "deno semi=1 ofs no-opt/maglev": [
+  {},
+  [
+   "/home/user/engines/node_modules/.bin/deno",
+   "run",
+   "-A",
+   "--unstable-detect-cjs",
+   "--v8-flags=--max-semi-space-size=1,--optimize-for-size,--no-opt,--no-maglev",
+   "fake-run.cjs"
+  ]
+ ],
+ "node24 (repeat)": [
+  {},
+  [
+   "/home/user/native/tools/node24/bin/node",
+   "fake-run.cjs"
+  ]
+ ],
+ "node22 (repeat)": [
+  {},
+  [
+   "node",
+   "fake-run.cjs"
+  ]
+ ],
+ "node24 semi=1": [
+  {},
+  [
+   "/home/user/native/tools/node24/bin/node",
+   "--max-semi-space-size=1",
+   "fake-run.cjs"
+  ]
+ ],
+ "node24 semi=1 optimize-for-size": [
+  {},
+  [
+   "/home/user/native/tools/node24/bin/node",
+   "--max-semi-space-size=1",
+   "--optimize-for-size",
+   "fake-run.cjs"
+  ]
+ ]
+}

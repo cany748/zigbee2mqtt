@@ -1,0 +1,2 @@
+module.exports = {default: {getPath: () => "/home/user/zigbee2mqtt/node_modules/.pnpm/zigbee2mqtt-windfront@2.14.0/node_modules/zigbee2mqtt-windfront/dist", getOnboardingPath: () => "/home/user/zigbee2mqtt/node_modules/.pnpm/zigbee2mqtt-windfront@2.14.0/node_modules/zigbee2mqtt-windfront/dist/onboarding"}};
+module.exports.getPath = module.exports.default.getPath; module.exports.getOnboardingPath = module.exports.default.getOnboardingPath;

@@ -1,0 +1,8 @@
+# generated artifacts (rebuild with node-bundle.mjs / llrt-bundle.mjs / bun-build.mjs / build-fake.mjs)
+bun-bc*/
+bun-exe/
+node-bundle/
+llrt-bundle/
+deno-exe/
+fake-herdsman.cjs
+matrix-run.log
