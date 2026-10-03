@@ -1,0 +1,52 @@
+{
+ "xs (Moddable, xst default)": {
+  "empty": {
+   "ok": true,
+   "out": [],
+   "secs": 0.04,
+   "rss_mb": 51.9
+  },
+  "load": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=1841"
+   ],
+   "secs": 2.27,
+   "rss_mb": 141.4
+  },
+  "work": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=1801",
+    "WORK {\"convs\":271,\"ok\":188930,\"err\":11070,\"ms\":1490}"
+   ],
+   "secs": 4.53,
+   "rss_mb": 141.4
+  }
+ },
+ "xs (Moddable, small heap)": {
+  "empty": {
+   "ok": true,
+   "out": [],
+   "secs": 0.03,
+   "rss_mb": 51.9
+  },
+  "load": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=1776"
+   ],
+   "secs": 2.29,
+   "rss_mb": 141.4
+  },
+  "work": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=1693",
+    "WORK {\"convs\":271,\"ok\":188930,\"err\":11070,\"ms\":1232}"
+   ],
+   "secs": 4.36,
+   "rss_mb": 141.5
+  }
+ }
+}

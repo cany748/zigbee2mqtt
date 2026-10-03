@@ -1,0 +1,27 @@
+{
+ "xs (Moddable, small heap)": {
+  "empty": {
+   "ok": true,
+   "out": [],
+   "secs": 0.01,
+   "rss_mb": 11.2
+  },
+  "load": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=9917"
+   ],
+   "secs": 10.22,
+   "rss_mb": 87.0
+  },
+  "work": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=10094",
+    "WORK {\"convs\":271,\"ok\":188930,\"err\":11070,\"ms\":2799}"
+   ],
+   "secs": 13.87,
+   "rss_mb": 86.9
+  }
+ }
+}

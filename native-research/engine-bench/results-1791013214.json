@@ -1,0 +1,102 @@
+{
+ "hermes": {
+  "empty": {
+   "ok": true,
+   "out": [],
+   "secs": 0.01,
+   "rss_mb": 12.0
+  },
+  "load": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=127"
+   ],
+   "secs": 6.05,
+   "rss_mb": 257.6
+  },
+  "work": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=101",
+    "WORK {\"convs\":271,\"ok\":188930,\"err\":11070,\"ms\":269}"
+   ],
+   "secs": 5.7,
+   "rss_mb": 259.3
+  }
+ },
+ "hermes -lazy": {
+  "empty": {
+   "ok": true,
+   "out": [],
+   "secs": 0.01,
+   "rss_mb": 11.8
+  },
+  "load": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=724"
+   ],
+   "secs": 0.85,
+   "rss_mb": 168.5
+  },
+  "work": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=777",
+    "WORK {\"convs\":271,\"ok\":188930,\"err\":11070,\"ms\":523}"
+   ],
+   "secs": 1.45,
+   "rss_mb": 171.9
+  }
+ },
+ "hermes (bytecode .hbc)": {
+  "empty": {
+   "ok": true,
+   "out": [],
+   "secs": 0.01,
+   "rss_mb": 11.5
+  },
+  "load": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=107"
+   ],
+   "secs": 0.13,
+   "rss_mb": 41.3
+  },
+  "work": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=98",
+    "WORK {\"convs\":271,\"ok\":188930,\"err\":11070,\"ms\":280}"
+   ],
+   "secs": 0.39,
+   "rss_mb": 42.5
+  }
+ },
+ "quickjs-ng (bytecode, -ss)": {
+  "empty": {
+   "ok": true,
+   "out": [],
+   "secs": 0.0,
+   "rss_mb": 11.5
+  },
+  "load": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=184"
+   ],
+   "secs": 0.23,
+   "rss_mb": 42.5
+  },
+  "work": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=204",
+    "WORK {\"convs\":271,\"ok\":188930,\"err\":11070,\"ms\":789}"
+   ],
+   "secs": 1.05,
+   "rss_mb": 42.7
+  }
+ }
+}

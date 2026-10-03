@@ -1,0 +1,53 @@
+{
+ "escargot": {
+  "empty": {
+   "ok": true,
+   "out": [],
+   "secs": 0.02,
+   "rss_mb": 11.2
+  },
+  "load": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=366"
+   ],
+   "secs": 0.68,
+   "rss_mb": 49.7
+  },
+  "work": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=360",
+    "WORK {\"convs\":271,\"ok\":188930,\"err\":11070,\"ms\":1508}"
+   ],
+   "secs": 2.03,
+   "rss_mb": 53.0
+  }
+ },
+ "boa": {
+  "empty": {
+   "ok": true,
+   "out": [],
+   "secs": 0.01,
+   "rss_mb": 15.5
+  },
+  "load": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=1141"
+   ],
+   "secs": 2.16,
+   "rss_mb": 248.8
+  },
+  "work": {
+   "ok": false,
+   "out": [
+    "      at \u001b[35m./csu/../sysdeps/nptl/libc_start_call_main.h\u001b[0m:\u001b[35m58\u001b[0m",
+    "   2: \u001b[32m__libc_start_main_impl\u001b[0m\u001b[90m<unknown>\u001b[0m",
+    "      at \u001b[35m./csu/../csu/libc-start.c\u001b[0m:\u001b[35m360\u001b[0m"
+   ],
+   "secs": 3.6,
+   "rss_mb": 250.9
+  }
+ }
+}

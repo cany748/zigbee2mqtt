@@ -1,0 +1,68 @@
+{
+ "quickjs (Bellard)": {
+  "empty": {
+   "ok": true,
+   "out": [],
+   "secs": 0.0,
+   "rss_mb": 11.5
+  },
+  "load": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=128"
+   ],
+   "secs": 0.55,
+   "rss_mb": 59.6
+  },
+  "work": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=224",
+    "WORK {\"convs\":271,\"ok\":188930,\"err\":11070,\"ms\":778}"
+   ],
+   "secs": 1.46,
+   "rss_mb": 59.9
+  }
+ },
+ "xs (Moddable)": {
+  "empty": {
+   "ok": true,
+   "out": [],
+   "secs": 0.02,
+   "rss_mb": 51.9
+  },
+  "load": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=1675"
+   ],
+   "secs": 2.23,
+   "rss_mb": 141.5
+  },
+  "work": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=1845",
+    "WORK {\"convs\":271,\"ok\":188930,\"err\":11070,\"ms\":1318}"
+   ],
+   "secs": 4.56,
+   "rss_mb": 141.5
+  }
+ },
+ "jerryscript": {
+  "empty": {
+   "ok": true,
+   "out": [],
+   "secs": 0.0,
+   "rss_mb": 11.5
+  },
+  "load": {
+   "ok": false,
+   "out": [
+    "Unhandled exception: SyntaxError"
+   ],
+   "secs": 1.2,
+   "rss_mb": 11.5
+  }
+ }
+}

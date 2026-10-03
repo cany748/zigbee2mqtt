@@ -1,0 +1,1 @@
+python3 tools/build.py --profile=es.next --cpointer-32bit=on --mem-heap=1048576 --lto=on

@@ -1,0 +1,53 @@
+diff --git a/xs/tools/xst.c b/xs/tools/xst.c
+index 02cd3a7..57c8642 100644
+--- a/xs/tools/xst.c
++++ b/xs/tools/xst.c
+@@ -191,11 +191,11 @@ int main(int argc, char* argv[])
+  	}
+ 	else {
+ 		xsCreation _creation = {
+-			16 * 1024 * 1024, 	/* initialChunkSize */
+-			16 * 1024 * 1024, 	/* incrementalChunkSize */
+-			1 * 1024 * 1024, 	/* initialHeapCount */
+-			1 * 1024 * 1024, 	/* incrementalHeapCount */
+-			256 * 1024, 		/* stackCount */
++			256 * 1024, 	/* initialChunkSize */
++			1 * 1024 * 1024, 	/* incrementalChunkSize */
++			32 * 1024, 	/* initialHeapCount */
++			64 * 1024, 	/* incrementalHeapCount */
++			64 * 1024, 		/* stackCount */
+ 			1024, 				/* initialKeyCount */
+ 			1024,				/* incrementalKeyCount */
+ 			1993, 				/* nameModulo */
+@@ -337,11 +337,11 @@ int fxRunBundle(const char* path)
+ 	fclose(file);
+ 
+ 	xsCreation _creation = {
+-		16 * 1024 * 1024, 	/* initialChunkSize */
+-		16 * 1024 * 1024, 	/* incrementalChunkSize */
+-		1 * 1024 * 1024, 	/* initialHeapCount */
+-		1 * 1024 * 1024, 	/* incrementalHeapCount */
+-		256 * 1024, 		/* stackCount */
++		256 * 1024, 	/* initialChunkSize */
++		1 * 1024 * 1024, 	/* incrementalChunkSize */
++		32 * 1024, 	/* initialHeapCount */
++		64 * 1024, 	/* incrementalHeapCount */
++		64 * 1024, 		/* stackCount */
+ 		1024, 				/* initialKeyCount */
+ 		1024,				/* incrementalKeyCount */
+ 		1993, 				/* nameModulo */
+@@ -689,10 +689,10 @@ void* fx_agent_start_aux(void* it)
+ #endif
+ {
+ 	xsCreation creation = {
+-		16 * 1024 * 1024, 	/* initialChunkSize */
+-		16 * 1024 * 1024, 	/* incrementalChunkSize */
+-		1 * 1024 * 1024, 	/* initialHeapCount */
+-		1 * 1024 * 1024, 	/* incrementalHeapCount */
++		256 * 1024, 	/* initialChunkSize */
++		1 * 1024 * 1024, 	/* incrementalChunkSize */
++		32 * 1024, 	/* initialHeapCount */
++		64 * 1024, 	/* incrementalHeapCount */
+ 		4096, 				/* stackCount */
+ 		1024, 				/* initialKeyCount */
+ 		1024,				/* incrementalKeyCount */

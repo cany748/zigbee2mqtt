@@ -1,0 +1,152 @@
+{
+ "node (V8)": {
+  "empty": {
+   "ok": true,
+   "out": [],
+   "secs": 0.03,
+   "rss_mb": 44.8
+  },
+  "load": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=221"
+   ],
+   "secs": 0.32,
+   "rss_mb": 114.0
+  },
+  "work": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=229",
+    "WORK {\"convs\":271,\"ok\":188930,\"err\":11070,\"ms\":213}"
+   ],
+   "secs": 0.57,
+   "rss_mb": 138.9
+  }
+ },
+ "node + flags": {
+  "empty": {
+   "ok": true,
+   "out": [],
+   "secs": 0.03,
+   "rss_mb": 44.4
+  },
+  "load": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=246"
+   ],
+   "secs": 0.34,
+   "rss_mb": 90.9
+  },
+  "work": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=262",
+    "WORK {\"convs\":271,\"ok\":188930,\"err\":11070,\"ms\":365}"
+   ],
+   "secs": 0.73,
+   "rss_mb": 91.6
+  }
+ },
+ "deno (V8)": {
+  "empty": {
+   "ok": true,
+   "out": [],
+   "secs": 0.02,
+   "rss_mb": 29.0
+  },
+  "load": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=225"
+   ],
+   "secs": 0.28,
+   "rss_mb": 118.5
+  },
+  "work": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=255",
+    "WORK {\"convs\":271,\"ok\":188930,\"err\":11070,\"ms\":275}"
+   ],
+   "secs": 0.61,
+   "rss_mb": 171.1
+  }
+ },
+ "bun (JSC)": {
+  "empty": {
+   "ok": true,
+   "out": [],
+   "secs": 0.01,
+   "rss_mb": 28.5
+  },
+  "load": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=232"
+   ],
+   "secs": 0.32,
+   "rss_mb": 114.4
+  },
+  "work": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=264",
+    "WORK {\"convs\":271,\"ok\":188930,\"err\":11070,\"ms\":191}"
+   ],
+   "secs": 0.56,
+   "rss_mb": 149.8
+  }
+ },
+ "bun --smol (JSC)": {
+  "empty": {
+   "ok": true,
+   "out": [],
+   "secs": 0.01,
+   "rss_mb": 28.5
+  },
+  "load": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=242"
+   ],
+   "secs": 0.31,
+   "rss_mb": 114.1
+  },
+  "work": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=238",
+    "WORK {\"convs\":271,\"ok\":188930,\"err\":11070,\"ms\":181}"
+   ],
+   "secs": 0.49,
+   "rss_mb": 150.9
+  }
+ },
+ "quickjs-ng": {
+  "empty": {
+   "ok": true,
+   "out": [],
+   "secs": 0.0,
+   "rss_mb": 11.6
+  },
+  "load": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=163"
+   ],
+   "secs": 0.49,
+   "rss_mb": 61.7
+  },
+  "work": {
+   "ok": true,
+   "out": [
+    "LOADED defs=1501 ms=163",
+    "WORK {\"convs\":271,\"ok\":188930,\"err\":11070,\"ms\":781}"
+   ],
+   "secs": 1.31,
+   "rss_mb": 62.1
+  }
+ }
+}
