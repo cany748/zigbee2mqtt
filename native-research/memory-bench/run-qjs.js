@@ -1,0 +1,12 @@
+import * as std from "qjs:std";
+import * as os from "qjs:os";
+globalThis.os = os;
+globalThis.setTimeout = os.setTimeout; globalThis.clearTimeout = os.clearTimeout;
+globalThis.setInterval = (f, ms) => { let h; const t = () => { f(); h = os.setTimeout(t, ms); }; h = os.setTimeout(t, ms); return h; };
+globalThis.clearInterval = os.clearTimeout;
+globalThis.console = globalThis.console || {log: print};
+const t0 = Date.now();
+await import("./zhc-bundle.js");
+const t1 = Date.now();
+print("defs loaded:", globalThis.__defs, "load ms:", t1 - t0);
+const s = std.loadFile("/proc/self/status"); print(s.split("\n").filter(l => /VmRSS|VmHWM/.test(l)).join(" | "));

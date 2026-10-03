@@ -3,6 +3,8 @@
 Дата: 2026-10-02. Ревизия z2m: `a8171a5` (2.13.0-dev, zigbee-herdsman 10.8.1, zigbee-herdsman-converters 26.91.0).
 Стенд: Linux x86-64, 4 vCPU, ~15 ГБ RAM (лимит cgroup), Node 22/24, clang 18.
 
+> Анализ памяти и архитектуры «нативное ядро + QuickJS для конвертеров» — в [memory.md](memory.md).
+
 ## TL;DR
 
 - **Скомпилировать z2m целиком удалось только Perry**: все 652 модуля (z2m + herdsman + converters + mqtt + winston + ajv + ws…) → один ELF-бинарник **~210 МБ**. Понадобились: пересборка рантайма Perry из исходников (для `node:net`), выключение одной оптимизации (`PERRY_PTR_SHAPE_THIS=0`, баг кодогенерации), ~1.5–1.8 ч компиляции и до **12 ГБ RAM** в один поток.
