@@ -1,0 +1,112 @@
+{
+ "node22 semi=1 no-opt/maglev/sparkplug": {
+  "sent": 4470,
+  "devices": 62,
+  "rss_end": 134,
+  "rss_peak": 138,
+  "anon_end": 89,
+  "file_end": 45,
+  "rss_median": 133,
+  "start_ms": 2949,
+  "rss_after_start": 130
+ },
+ "node22 semi=1 optimize-for-size": {
+  "sent": 4475,
+  "devices": 62,
+  "rss_end": 140,
+  "rss_peak": 145,
+  "anon_end": 88,
+  "file_end": 51,
+  "rss_median": 139,
+  "start_ms": 2826,
+  "rss_after_start": 141
+ },
+ "node22 semi=1 ofs no-opt/maglev": {
+  "sent": 4475,
+  "devices": 62,
+  "rss_end": 125,
+  "rss_peak": 129,
+  "anon_end": 79,
+  "file_end": 46,
+  "rss_median": 124,
+  "start_ms": 2877,
+  "rss_after_start": 126
+ },
+ "node22 semi=1 ofs no-opt/maglev old=96": {
+  "sent": 4475,
+  "devices": 62,
+  "rss_end": 133,
+  "rss_peak": 140,
+  "anon_end": 87,
+  "file_end": 46,
+  "rss_median": 132,
+  "start_ms": 2924,
+  "rss_after_start": 138
+ },
+ "node24 semi=1 ofs no-opt/maglev": {
+  "sent": 4480,
+  "devices": 62,
+  "rss_end": 128,
+  "rss_peak": 139,
+  "anon_end": 83,
+  "file_end": 45,
+  "rss_median": 127,
+  "start_ms": 2805,
+  "rss_after_start": 130
+ },
+ "deno semi=1 ofs no-opt/maglev": {
+  "sent": 4445,
+  "devices": 62,
+  "rss_end": 148,
+  "rss_peak": 162,
+  "anon_end": 101,
+  "file_end": 47,
+  "rss_median": 152,
+  "start_ms": 2998,
+  "rss_after_start": 150
+ },
+ "node24 (repeat)": {
+  "sent": 4480,
+  "devices": 62,
+  "rss_end": 263,
+  "rss_peak": 263,
+  "anon_end": 211,
+  "file_end": 52,
+  "rss_median": 240,
+  "start_ms": 2628,
+  "rss_after_start": 206
+ },
+ "node22 (repeat)": {
+  "sent": 4480,
+  "devices": 62,
+  "rss_end": 162,
+  "rss_peak": 177,
+  "anon_end": 110,
+  "file_end": 51,
+  "rss_median": 159,
+  "start_ms": 2536,
+  "rss_after_start": 173
+ },
+ "node24 semi=1": {
+  "sent": 4485,
+  "devices": 62,
+  "rss_end": 155,
+  "rss_peak": 158,
+  "anon_end": 102,
+  "file_end": 52,
+  "rss_median": 155,
+  "start_ms": 2659,
+  "rss_after_start": 149
+ },
+ "node24 semi=1 optimize-for-size": {
+  "sent": 4480,
+  "devices": 62,
+  "rss_end": 145,
+  "rss_peak": 169,
+  "anon_end": 93,
+  "file_end": 53,
+  "rss_median": 145,
+  "start_ms": 2698,
+  "rss_after_start": 153
+ }
+}

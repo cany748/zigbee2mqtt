@@ -1,0 +1,94 @@
+{
+ "node22 default": {
+  "sent": 14955,
+  "devices": 62,
+  "rss_end": 179,
+  "rss_peak": 182,
+  "anon_end": 128,
+  "file_end": 51,
+  "rss_median": 176,
+  "cpu_s": 6.7,
+  "rss_every_30s": [
+   13,
+   146,
+   157,
+   163,
+   164,
+   167,
+   177,
+   177,
+   179,
+   181,
+   179
+  ]
+ },
+ "node22 semi=1 ofs no-opt/maglev": {
+  "sent": 14950,
+  "devices": 62,
+  "rss_end": 126,
+  "rss_peak": 131,
+  "anon_end": 81,
+  "file_end": 46,
+  "rss_median": 126,
+  "cpu_s": 9.0,
+  "rss_every_30s": [
+   22,
+   124,
+   124,
+   124,
+   125,
+   125,
+   125,
+   128,
+   125,
+   128,
+   126
+  ]
+ },
+ "deno semi=1 lite": {
+  "sent": 14830,
+  "devices": 62,
+  "rss_end": 159,
+  "rss_peak": 163,
+  "anon_end": 112,
+  "file_end": 47,
+  "rss_median": 153,
+  "cpu_s": 9.9,
+  "rss_every_30s": [
+   5,
+   149,
+   147,
+   148,
+   149,
+   152,
+   154,
+   158,
+   155,
+   153,
+   158
+  ]
+ },
+ "bun JIT off": {
+  "sent": 14815,
+  "devices": 62,
+  "rss_end": 160,
+  "rss_peak": 185,
+  "anon_end": 122,
+  "file_end": 38,
+  "rss_median": 162,
+  "cpu_s": 567.2,
+  "rss_every_30s": [
+   20,
+   162,
+   163,
+   162,
+   160,
+   160,
+   163,
+   163,
+   164,
+   162,
+   162
+  ]
+ }
+}

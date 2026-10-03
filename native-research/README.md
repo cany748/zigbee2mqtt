@@ -3,6 +3,7 @@
 Дата: 2026-10-02. Ревизия z2m: `a8171a5` (2.13.0-dev, zigbee-herdsman 10.8.1, zigbee-herdsman-converters 26.91.0).
 Стенд: Linux x86-64, 4 vCPU, ~15 ГБ RAM (лимит cgroup), Node 22/24, clang 18.
 
+> Замена Node на Bun/Deno/LLRT с полным z2m — в [runtime.md](runtime.md).
 > Анализ памяти и архитектуры «нативное ядро + QuickJS для конвертеров» — в [memory.md](memory.md).
 
 ## TL;DR
