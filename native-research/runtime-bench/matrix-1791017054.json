@@ -1,0 +1,274 @@
+{
+ "node22": {
+  "sent": 4480,
+  "devices": 62,
+  "rss_end": 161,
+  "rss_peak": 176,
+  "anon_end": 110,
+  "file_end": 51,
+  "rss_median": 158,
+  "start_ms": 2563,
+  "rss_after_start": 172
+ },
+ "node22 semi=1": {
+  "sent": 4485,
+  "devices": 62,
+  "rss_end": 149,
+  "rss_peak": 154,
+  "anon_end": 98,
+  "file_end": 51,
+  "rss_median": 148,
+  "start_ms": 2687,
+  "rss_after_start": 146
+ },
+ "node22 semi=1 lite": {
+  "error": [
+   "ReferenceError: WebAssembly is not defined"
+  ]
+ },
+ "node22 optimize-for-size": {
+  "sent": 4480,
+  "devices": 62,
+  "rss_end": 138,
+  "rss_peak": 145,
+  "anon_end": 86,
+  "file_end": 51,
+  "rss_median": 138,
+  "start_ms": 2652,
+  "rss_after_start": 144
+ },
+ "node22 semi=1 jitless": {
+  "error": [
+   "ReferenceError: WebAssembly is not defined"
+  ]
+ },
+ "node22 semi=1 old=64 lite": {
+  "error": [
+   "ReferenceError: WebAssembly is not defined"
+  ]
+ },
+ "node22 semi=1 lite single-thr": {
+  "error": [
+   "ReferenceError: WebAssembly is not defined"
+  ]
+ },
+ "node22 compile-cache": {
+  "sent": 4480,
+  "devices": 62,
+  "rss_end": 171,
+  "rss_peak": 186,
+  "anon_end": 120,
+  "file_end": 51,
+  "rss_median": 168,
+  "start_ms": 2590,
+  "rss_after_start": 182
+ },
+ "node22 compile-cache semi=1 lite": {
+  "error": [
+   "ReferenceError: WebAssembly is not defined"
+  ]
+ },
+ "node24": {
+  "sent": 4480,
+  "devices": 62,
+  "rss_end": 262,
+  "rss_peak": 262,
+  "anon_end": 210,
+  "file_end": 52,
+  "rss_median": 259,
+  "start_ms": 2986,
+  "rss_after_start": 207
+ },
+ "node24 semi=1 lite": {
+  "sent": 4470,
+  "devices": 62,
+  "rss_end": 128,
+  "rss_peak": 142,
+  "anon_end": 83,
+  "file_end": 45,
+  "rss_median": 128,
+  "start_ms": 3272,
+  "rss_after_start": 134
+ },
+ "bun": {
+  "sent": 4385,
+  "devices": 62,
+  "rss_end": 235,
+  "rss_peak": 246,
+  "anon_end": 190,
+  "file_end": 45,
+  "rss_median": 229,
+  "start_ms": 2666,
+  "rss_after_start": 226
+ },
+ "bun --smol": {
+  "sent": 4360,
+  "devices": 62,
+  "rss_end": 233,
+  "rss_peak": 243,
+  "anon_end": 188,
+  "file_end": 45,
+  "rss_median": 227,
+  "start_ms": 2711,
+  "rss_after_start": 226
+ },
+ "bun JIT off": {
+  "sent": 4430,
+  "devices": 62,
+  "rss_end": 161,
+  "rss_peak": 183,
+  "anon_end": 123,
+  "file_end": 38,
+  "rss_median": 161,
+  "start_ms": 3230,
+  "rss_after_start": 172
+ },
+ "bun --smol JIT off": {
+  "sent": 4445,
+  "devices": 62,
+  "rss_end": 162,
+  "rss_peak": 185,
+  "anon_end": 124,
+  "file_end": 38,
+  "rss_median": 162,
+  "start_ms": 3444,
+  "rss_after_start": 172
+ },
+ "bun forceRAMSize=64M": {
+  "sent": 4445,
+  "devices": 62,
+  "rss_end": 221,
+  "rss_peak": 237,
+  "anon_end": 176,
+  "file_end": 45,
+  "rss_median": 224,
+  "start_ms": 3334,
+  "rss_after_start": 228
+ },
+ "bun --smol forceRAMSize=64M JIT off": {
+  "sent": 4455,
+  "devices": 62,
+  "rss_end": 161,
+  "rss_peak": 184,
+  "anon_end": 123,
+  "file_end": 38,
+  "rss_median": 161,
+  "start_ms": 3220,
+  "rss_after_start": 172
+ },
+ "deno": {
+  "sent": 4445,
+  "devices": 62,
+  "rss_end": 167,
+  "rss_peak": 214,
+  "anon_end": 116,
+  "file_end": 51,
+  "rss_median": 163,
+  "start_ms": 2293,
+  "rss_after_start": 207
+ },
+ "deno semi=1 lite": {
+  "sent": 4445,
+  "devices": 62,
+  "rss_end": 147,
+  "rss_peak": 157,
+  "anon_end": 101,
+  "file_end": 46,
+  "rss_median": 146,
+  "start_ms": 2990,
+  "rss_after_start": 147
+ },
+ "deno semi=1 jitless": {
+  "sent": 4445,
+  "devices": 62,
+  "rss_end": 150,
+  "rss_peak": 158,
+  "anon_end": 103,
+  "file_end": 46,
+  "rss_median": 149,
+  "start_ms": 3058,
+  "rss_after_start": 149
+ },
+ "node22 esbuild bundle": {
+  "sent": 4485,
+  "devices": 62,
+  "rss_end": 189,
+  "rss_peak": 202,
+  "anon_end": 138,
+  "file_end": 51,
+  "rss_median": 183,
+  "start_ms": 2410,
+  "rss_after_start": 198
+ },
+ "node22 esbuild bundle semi=1 lite": {
+  "error": [
+   "ReferenceError: WebAssembly is not defined"
+  ]
+ },
+ "deno esbuild bundle": {
+  "sent": 4450,
+  "devices": 62,
+  "rss_end": 204,
+  "rss_peak": 247,
+  "anon_end": 156,
+  "file_end": 48,
+  "rss_median": 196,
+  "start_ms": 2285,
+  "rss_after_start": 238
+ },
+ "bun bytecode (zhc external)": {
+  "sent": 4370,
+  "devices": 62,
+  "rss_end": 259,
+  "rss_peak": 271,
+  "anon_end": 213,
+  "file_end": 45,
+  "rss_median": 252,
+  "start_ms": 2536,
+  "rss_after_start": 246
+ },
+ "bun --smol bytecode (zhc external)": {
+  "sent": 4375,
+  "devices": 62,
+  "rss_end": 257,
+  "rss_peak": 270,
+  "anon_end": 212,
+  "file_end": 45,
+  "rss_median": 251,
+  "start_ms": 2529,
+  "rss_after_start": 248
+ },
+ "bun bytecode (static devices)": {
+  "sent": 4395,
+  "devices": 62,
+  "rss_end": 296,
+  "rss_peak": 303,
+  "anon_end": 250,
+  "file_end": 45,
+  "rss_median": 290,
+  "start_ms": 2316,
+  "rss_after_start": 292
+ },
+ "bun --compile --bytecode": {
+  "sent": 4385,
+  "devices": 62,
+  "rss_end": 253,
+  "rss_peak": 272,
+  "anon_end": 177,
+  "file_end": 76,
+  "rss_median": 259,
+  "start_ms": 2274,
+  "rss_after_start": 255
+ },
+ "bun --compile --bytecode JIT off": {
+  "sent": 4375,
+  "devices": 62,
+  "rss_end": 202,
+  "rss_peak": 209,
+  "anon_end": 134,
+  "file_end": 68,
+  "rss_median": 202,
+  "start_ms": 2879,
+  "rss_after_start": 198
+ }
+}

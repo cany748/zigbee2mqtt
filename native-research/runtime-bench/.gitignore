@@ -6,3 +6,4 @@ llrt-bundle/
 deno-exe/
 fake-herdsman.cjs
 matrix-run.log
+matrix-run2.log
